@@ -1,0 +1,277 @@
+/* ────────────────────────────────────────────────────────────
+   Preloader — DICH-pattern boot screen
+   ──────────────────────────────────────────────────────────── */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #07050e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* clip-path animates on exit via GSAP */
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* ─── Noise texture overlay ────────────────────────────────── */
+.preloader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ─── Horizontal scan line ─────────────────────────────────── */
+.scanLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(109, 40, 217, 0.4) 20%,
+    rgba(94, 234, 212, 0.6) 50%,
+    rgba(109, 40, 217, 0.4) 80%,
+    transparent 100%
+  );
+  animation: scanDown 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanDown {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ─── Top wordmark ─────────────────────────────────────────── */
+.wordmark {
+  position: absolute;
+  top: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  color: rgba(196, 181, 253, 0.35);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ─── Central ring system ──────────────────────────────────── */
+.ringSystem {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin-bottom: 3.5rem;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+}
+
+.ring1 {
+  inset: 0;
+  border-color: rgba(109, 40, 217, 0.2);
+  animation: ringRotate 12s linear infinite;
+}
+.ring1::after {
+  content: '';
+  position: absolute;
+  top: -2px; left: 30%;
+  width: 8px; height: 4px;
+  background: rgba(167, 139, 250, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
+}
+
+.ring2 {
+  inset: 20px;
+  border-color: rgba(94, 234, 212, 0.15);
+  animation: ringRotate 8s linear infinite reverse;
+}
+.ring2::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; right: 20%;
+  width: 6px; height: 3px;
+  background: rgba(94, 234, 212, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(94, 234, 212, 0.5);
+}
+
+.ring3 {
+  inset: 44px;
+  border-color: rgba(109, 40, 217, 0.12);
+  animation: ringRotate 5s linear infinite;
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Central orb ──────────────────────────────────────────── */
+.orb {
+  position: absolute;
+  inset: 68px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(167, 139, 250, 0.15) 0%,
+    rgba(94, 234, 212, 0.08) 50%,
+    transparent 100%
+  );
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  animation: orbPulse 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbCore {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.6), rgba(94, 234, 212, 0.3));
+  box-shadow:
+    0 0 12px rgba(167, 139, 250, 0.4),
+    0 0 30px rgba(109, 40, 217, 0.2);
+  animation: orbPulse 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes orbPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
+/* ─── Boot status block ────────────────────────────────────── */
+.statusBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 3rem;
+  width: 18rem;
+}
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.statusLine.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.statusLabel {
+  color: rgba(148, 163, 184, 0.5);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statusLabel::before {
+  content: '▸';
+  color: rgba(109, 40, 217, 0.7);
+  font-size: 0.55rem;
+}
+
+.statusDots {
+  flex: 1;
+  margin: 0 0.75rem;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.07);
+}
+
+.statusValue {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: rgba(94, 234, 212, 0.7);
+}
+
+/* ─── Enter button ─────────────────────────────────────────── */
+.enterWrap {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.enterWrap.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.enterBtn {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(196, 181, 253, 0.9);
+  background: transparent;
+  border: 1px solid rgba(109, 40, 217, 0.35);
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.enterBtn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(109, 40, 217, 0.08),
+    rgba(94, 234, 212, 0.04)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.enterBtn:hover {
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(167, 139, 250, 0.7);
+}
+.enterBtn:hover::before { opacity: 1; }
+
+/* Subtle corner nubs */
+.enterBtn::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 6px; height: 6px;
+  border-right: 1px solid rgba(94, 234, 212, 0.6);
+  border-bottom: 1px solid rgba(94, 234, 212, 0.6);
+}
+
+/* ─── Version tag ──────────────────────────────────────────── */
+.versionTag {
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.1);
+}
