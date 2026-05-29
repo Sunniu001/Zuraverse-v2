@@ -26,6 +26,10 @@ export const useVortex = () => {
 
 // Spline path defining the bent, curved trumpet wormhole corridor (exact same path!)
 class FunnelSplinePath extends THREE.Curve<THREE.Vector3> {
+  constructor() {
+    super();
+  }
+  
   getPoint(t: number, optionalTarget = new THREE.Vector3()) {
     const segments = [
       new THREE.Vector3(-14.0, 10.0, 20.0),   // Mouth opening upper-left, close to viewport
