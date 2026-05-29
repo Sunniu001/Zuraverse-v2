@@ -1,0 +1,794 @@
+/* ────────────────────────────────────────────────────────────
+   BZE Page — Full Lore Chronicle CSS
+   Theme: Cosmic Blue / Cyan  (#38bdf8)
+   ──────────────────────────────────────────────────────────── */
+
+/* ─── Page Shell ──────────────────────────────────────────── */
+.page {
+  background: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Top Navigation Bezel ────────────────────────────────── */
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 4%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLogoIcon {
+  font-size: 1.2rem;
+  color: #94a3b8;
+}
+
+.navLogoText {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.navCenter {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.navLink {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-transform: uppercase;
+}
+
+.navLink:hover {
+  color: #cbd5e1;
+}
+
+.navLinkActive {
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  transition: color 0.3s;
+}
+
+.navRight:hover {
+  color: #38bdf8;
+}
+
+.navTerminal {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.navTerminalIcon {
+  font-size: 1rem;
+}
+
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Ultra-wide cinematic banner strip - taller */
+.heroBanner {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* Increased for taller image */
+  max-height: 700px;
+  min-height: 450px;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: calc(100% - 150px);
+  margin-left: 150px;
+  height: 110%;          /* slightly taller than container to allow parallax travel */
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transform: translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
+
+/* Gradient fade at the bottom of the banner into black */
+.bannerFadeBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.6) 70%,
+    #000000 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Full-cover overlay — left-aligned text block */
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+/* Dark gradient vignette on the left so text is legible */
+.bannerLeftGrad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.82) 0%,
+    rgba(0, 0, 0, 0.55) 35%,
+    rgba(0, 0, 0, 0.1)  55%,
+    transparent         72%
+  );
+  pointer-events: none;
+}
+
+/* Wrapper for sidebar and text block */
+.bannerContentWrap {
+  position: relative;
+  z-index: 2;
+  padding: 0 5% 0 8%; /* Removed top padding for center alignment */
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+
+/* Sidebar with line and chevron */
+.bannerSidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+  padding-bottom: 24px;
+}
+
+.sidebarLine {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(56, 189, 248, 0.4) 0%,
+    rgba(56, 189, 248, 0.1) 100%
+  );
+}
+
+.sidebarChevron {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -1px; /* overlap seamlessly with the line */
+}
+
+/* Text group */
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+}
+
+/* BZE heading + subtitle below the banner */
+.heroBelow {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 44px 5% 72px 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Eyebrow label — "BZE //" */
+.bannerEyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: rgba(56, 189, 248, 0.65);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Main banner title — "BEFORE ZURIAN ERA" */
+.bannerTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  margin: 0;
+  margin-left: 8px; /* optical balance for heavy letter spacing */
+  white-space: nowrap;
+}
+
+/* Subtitle — "THE AGE OF WANDERING" */
+.bannerSubtitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+  text-transform: uppercase;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+/* Short description in banner */
+.bannerDesc {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+
+
+.heroDescription {
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(148, 163, 184, 0.85);
+  max-width: 600px;
+}
+
+/* Matching HippieAliensSection landing page title style */
+.heroSectionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.heroSectionTitleGlow {
+  background: linear-gradient(135deg, #a78bfa 30%, #38bdf8 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.4));
+}
+
+/* Matching HippieAliensSection landing page lead/description style */
+.heroSectionDesc {
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: #cbd5e1;
+  font-weight: 300;
+}
+
+.highlightCyan {
+  color: #38bdf8;
+  font-weight: 500;
+}
+
+/* Narrative container — tighter vertical rhythm */
+.heroNarrative {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Accent lines — slightly larger, italic, left-bordered teal */
+.heroNarrativeAccent {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: #e2e8f0;
+  font-weight: 400;
+  font-style: italic;
+  border-left: 3px solid rgba(56, 189, 248, 0.5);
+  padding-left: 18px;
+}
+
+.scrollHint {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  color: rgba(56, 189, 248, 0.6);
+  margin-top: 12px;
+  animation: fadeUpDown 2.5s ease-in-out infinite;
+}
+
+/* ─── Shared Section Shell ────────────────────────────────── */
+.section {
+  position: relative;
+  width: 100%;
+  padding: 100px 5%;
+  overflow: hidden;
+}
+
+.sectionDark {
+  background: rgba(4, 8, 14, 0.98);
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.015) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionHeaderLeft {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.sectionEyebrowLeft {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: rgba(56, 189, 248, 0.45);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.sectionTitleLeft {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.titleGradient {
+  background: linear-gradient(135deg, #a78bfa 30%, #38bdf8 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.3));
+}
+
+.sectionLineLeft {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, #38bdf8, transparent);
+  margin-bottom: 24px;
+}
+
+.sectionDescLeft {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 680px;
+  margin-bottom: 64px;
+  text-align: left;
+}
+
+/* ─── Center Aligned Section Header (Used for Houses) ─── */
+.sectionHeaderCenter {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sectionEyebrowCenter {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: rgba(56, 189, 248, 0.45);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.sectionTitleCenter {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.sectionLineCenter {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+  margin: 0 auto 24px auto;
+}
+
+.sectionDescCenter {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 680px;
+  margin: 0 auto 64px auto;
+  text-align: center;
+}
+
+.housesGrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 60px;
+  align-items: flex-start;
+  max-width: 1150px; /* Forces 3 items on the first row (1110px needed) and 2 on the next */
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .housesGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 680px) {
+  .housesGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.houseCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 330px;
+  cursor: pointer;
+  position: relative;
+}
+
+.houseCard:hover .houseImageWrap {
+  border-color: rgba(var(--house-rgb), 0.8);
+  box-shadow: 0 0 35px rgba(var(--house-rgb), 0.3);
+}
+
+/* Character image — Circle Portal */
+.houseImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--house-rgb), 0.3);
+  box-shadow: 0 0 15px rgba(var(--house-rgb), 0.1);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  flex-shrink: 0;
+  /* NO overflow:hidden so the dashed ring can bleed out */
+}
+
+/* The outer dashed animated ring */
+.houseImageWrap::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(var(--house-rgb), 0.6);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.houseCard:hover .houseImageWrap::before {
+  opacity: 1;
+  transform: scale(1);
+  animation: rotateDashed 20s linear infinite;
+}
+
+@keyframes rotateDashed {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+/* Inner mask for image scaling */
+.houseImageClip {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.houseImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transform: scale(1.1) translate(0px, 0px); /* Zoomed in by default */
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  filter: saturate(1.1);
+}
+
+.houseCard:hover .houseImage {
+  /* Zooms out and shifts based on mouse position */
+  transition: transform 0.1s ease-out; /* Snappier follow while hovering */
+  transform: scale(1) translate(var(--px, 0px), var(--py, 0px));
+}
+
+.houseImageGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(var(--house-rgb), 0.12) 70%,
+    rgba(6, 10, 16, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* Text area below image */
+.houseCardBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 20px 0 0 0;
+  width: 100%;
+}
+
+.housePeace {
+  font-size: 1.25rem;
+  color: rgba(var(--house-rgb), 0.6);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.houseName {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--house-color);
+  text-shadow: 0 0 10px rgba(var(--house-rgb), 0.4);
+  line-height: 1.1;
+}
+
+.houseTitle {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: rgba(var(--house-rgb), 0.6);
+  font-weight: 700;
+}
+
+.houseDesc {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #64748b;
+  margin-top: 8px;
+  transition: color 0.3s;
+}
+
+.houseCard:hover .houseDesc {
+  color: #94a3b8;
+}
+
+/* ─── NARRATIVE BLOCK ─────────────────────────────────────── */
+.narrativeBlock {
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 16px;
+}
+
+.narrativeLine {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #94a3b8;
+  font-weight: 400;
+  border-left: 2px solid transparent;
+  padding-left: 0;
+  transition: all 0.3s;
+}
+
+.narrativeHighlight {
+  font-size: 1.25rem;
+  color: #e2e8f0;
+  font-weight: 600;
+  border-left: 3px solid rgba(56, 189, 248, 0.5);
+  padding-left: 22px;
+  font-style: italic;
+}
+
+/* ─── NIRVANA CINEMATIC PARALLAX ───────────────────────────── */
+.nirvanaCanvasContainer {
+  margin-top: 40px;
+  width: 100%;
+}
+
+.parallaxCanvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3.5 / 1; /* Made slightly wider to feel less tall */
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: #000;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), inset 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 -20px 80px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 900px) {
+  .parallaxCanvas {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+.pLayerWrap {
+  position: absolute;
+  /* Reduced overscale significantly to reveal more of the ship */
+  top: -4%;
+  left: -2%;
+  width: 104%;
+  height: 108%;
+  transition: transform 0.1s ease-out;
+  pointer-events: none;
+}
+
+.pLayerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Base mouse parallax shifts using --mx and --my (normalized -1 to 1) */
+.pWrapBG {
+  transform: translate(calc(var(--mx, 0) * -5px), calc(var(--my, 0) * -5px));
+}
+.pWrapL4 {
+  transform: translate(calc(var(--mx, 0) * -8px), calc(var(--my, 0) * -8px));
+}
+.pWrapL3 {
+  transform: translate(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -12px));
+}
+.pWrapL2 {
+  /* Main character layer */
+  transform: translate(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -18px));
+}
+.pWrapL1 {
+  /* Foreground elements */
+  transform: translate(calc(var(--mx, 0) * -25px), calc(var(--my, 0) * -25px));
+}
+
+/* Zero Gravity Animations applied to the Images inside the wrappers */
+@keyframes floatMain {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes floatMedRev {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(12px) rotate(1.5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes floatFast {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-25px) rotate(-3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.pFloatMain {
+  animation: floatMain 8s ease-in-out infinite;
+}
+.pFloatSlow {
+  animation: floatSlow 12s ease-in-out infinite;
+}
+.pFloatMedRev {
+  animation: floatMedRev 9s ease-in-out infinite;
+}
+.pFloatFast {
+  animation: floatFast 6s ease-in-out infinite;
+}
+
+.parallaxGlowOverlay {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+/* ─── Footer Nav ──────────────────────────────────────────── */
+.footerNav {
+  display: flex;
+  justify-content: center;
+  padding: 60px 5% 80px;
+  background: #000;
+  border-top: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.returnBtn {
+  background: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.returnBtn:hover {
+  background: rgba(56, 189, 248, 0.07);
+  border-color: #38bdf8;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ─── Animations ──────────────────────────────────────────── */
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeUpDown {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50%       { opacity: 1;   transform: translateY(6px); }
+}

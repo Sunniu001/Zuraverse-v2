@@ -2,11 +2,10 @@
    HeroSection — Multi-Layer Parallax
    ──────────────────────────────────────────────────────────── */
 
-/* ─── Scroll Container (200vh) ─────────────────────────────── */
+/* ─── Scroll Container (350vh) ─────────────────────────────── */
 .heroContainer {
   position: relative;
-  height: 200vh;          /* extra 100vh = scroll room for zoom transition */
-  /* NOTE: NO overflow:hidden here — it breaks position:sticky */
+  height: 350vh;          /* extra 250vh = deep scroll room for slow zoom transition! */
 }
 
 /* Sticky scene — locks to viewport, clips its own scaled content */
@@ -887,4 +886,48 @@
   100% {
     height: 100%;
   }
+}
+
+/* ─── Entry Transition Flash Overlay ───────────────────────── */
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 1.6s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.flashOverlayHidden {
+  opacity: 0;
+}
+
+/* Persistent global audio control rendered outside of the parallax container */
+.ambientHudPersistent {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(12, 11, 15, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(94, 234, 212, 0.18);
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  z-index: 99999; /* high global z-index above all sections */
+  pointer-events: auto;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.8), 
+    inset 0 0 10px rgba(94, 234, 212, 0.05);
+  transition: all 0.3s ease;
+}
+
+.ambientHudPersistent:hover {
+  border-color: rgba(94, 234, 212, 0.4);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.9), 
+    0 0 15px rgba(94, 234, 212, 0.2);
 }

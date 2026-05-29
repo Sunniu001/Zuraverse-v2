@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import VortexProvider from '@/components/VortexTransition/VortexTransition';
 
 export const metadata: Metadata = {
   title: 'Zuraverse — Beyond The Event Horizon',
@@ -24,7 +25,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body>{children}</body>
+      <body>
+        <VortexProvider>
+          {children}
+        </VortexProvider>
+      </body>
     </html>
   );
 }
