@@ -1,35 +1,147 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './HippieAliensSection.module.css';
 
-export default function HippieAliensSection() {
+// Futuristic Hippie Alien species portraits dataset (dich-fashion models)
+const ALIEN_IMAGES = [
+  {
+    id: 0,
+    name: 'ASTRAL WEAVER',
+    class: 'TELEPATHIC COHERENCE',
+    image: '/house_ayahuasca.png',
+    glowColor: '#10b981' // Emerald green aura
+  },
+  {
+    id: 1,
+    name: 'REALITY SHIFTER',
+    class: 'DIMENSIONAL TRANSITION',
+    image: '/house_datura.png',
+    glowColor: '#a78bfa' // Violet aura
+  },
+  {
+    id: 2,
+    name: 'TEMPORAL SENTINEL',
+    class: 'CHRONAL TELEMETRY',
+    image: '/house_iboga.png',
+    glowColor: '#d946ef' // Fuchsia aura
+  },
+  {
+    id: 3,
+    name: 'PEACE HARBINGER',
+    class: 'EMPATHIC RESONANCE',
+    image: '/house_kava.png',
+    glowColor: '#06b6d4' // Cyan aura
+  },
+  {
+    id: 4,
+    name: 'DREAM ARCHITECT',
+    class: 'COSMIC DREAMWEAVING',
+    image: '/house_peyote.png',
+    glowColor: '#f59e0b' // Gold amber aura
+  },
+  {
+    id: 5,
+    name: 'NIRVANA MEDITATOR',
+    class: 'ZEN ASCENSION',
+    image: '/bze_nirvana_yoga.png',
+    glowColor: '#2dd4bf' // Cyan-Teal aura
+  }
+];
+
+interface HippieAliensSectionProps {
+  showSliderOnly?: boolean;
+}
+
+export default function HippieAliensSection({ showSliderOnly = false }: HippieAliensSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const autoSlideTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const startAutoSlide = () => {
+    stopAutoSlide();
+    autoSlideTimer.current = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % ALIEN_IMAGES.length;
+        scrollToIndex(next);
+        return next;
+      });
+    }, 3000); // Cycles every 3 seconds
+  };
+
+  const stopAutoSlide = () => {
+    if (autoSlideTimer.current) {
+      clearInterval(autoSlideTimer.current);
+    }
+  };
+
+  const scrollToIndex = (index: number) => {
+    if (sliderRef.current) {
+      const cardWidth = 244; // card (220px) + gap (24px)
+      const scrollPosition = index * cardWidth - (sliderRef.current.clientWidth / 2 - 110);
+      sliderRef.current.scrollTo({
+        left: Math.max(0, scrollPosition),
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Re-start or reset the timer whenever the activeIndex is modified (manual or automatic)
+  useEffect(() => {
+    startAutoSlide();
+    return () => stopAutoSlide();
+  }, [activeIndex]);
+
+  const handleManualClick = (index: number) => {
+    setActiveIndex(index);
+    scrollToIndex(index);
+  };
+
+  const handleArrowScroll = (direction: 'left' | 'right') => {
+    let nextIndex = activeIndex;
+    if (direction === 'left') {
+      nextIndex = (activeIndex - 1 + ALIEN_IMAGES.length) % ALIEN_IMAGES.length;
+    } else {
+      nextIndex = (activeIndex + 1) % ALIEN_IMAGES.length;
+    }
+    handleManualClick(nextIndex);
+  };
 
   return (
-    <section className={styles.section} id="hippie-aliens">
+    <section 
+      className={`${styles.section} ${showSliderOnly ? styles.sliderOnlySection : ''}`} 
+      id="hippie-aliens"
+    >
       <div className={styles.gridOverlay} aria-hidden="true" />
 
       {/* Terminal Bezel Top Bar */}
-      <div className={styles.terminalTopBar}>
-        <div className={styles.termLeft}>ZURAVERSE</div>
-        <div className={styles.termCenter}>
-          <div className={styles.termIndex}>| 02 |</div>
-          <div className={styles.termEyebrow}>THE HIPPIE ALIENS</div>
+      {!showSliderOnly && (
+        <div className={styles.terminalTopBar}>
+          <div className={styles.termLeft}>ZURAVERSE</div>
+          <div className={styles.termCenter}>
+            <div className={styles.termIndex}>| 02 |</div>
+            <div className={styles.termEyebrow}>THE HIPPIE ALIENS</div>
+          </div>
+          <div className={styles.termRight}>
+            DATABASE TERMINAL
+            <span className={styles.termBeacon} />
+          </div>
         </div>
-        <div className={styles.termRight}>
-          DATABASE TERMINAL
-          <span className={styles.termBeacon} />
-        </div>
-      </div>
+      )}
 
-      <div className={`${styles.corner} ${styles.topLeft}`} aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.topRight}`} aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.bottomLeft}`} aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.bottomRight}`} aria-hidden="true" />
+      {!showSliderOnly && (
+        <>
+          <div className={`${styles.corner} ${styles.topLeft}`} aria-hidden="true" />
+          <div className={`${styles.corner} ${styles.topRight}`} aria-hidden="true" />
+          <div className={`${styles.corner} ${styles.bottomLeft}`} aria-hidden="true" />
+          <div className={`${styles.corner} ${styles.bottomRight}`} aria-hidden="true" />
+        </>
+      )}
 
       <div className={styles.container}>
-        <div className={styles.layout}>
+        {!showSliderOnly && (
+          <div className={styles.layout}>
           
           {/* Content Column */}
           <div className={styles.contentCol}>
@@ -117,12 +229,72 @@ export default function HippieAliensSection() {
               </div>
             </div>
           </div>
+        </div>
+      )}
 
+        {/* ========================================================
+            DICH-FASHION HIPPIE ALIEN PORTRAITS AUTO-SLIDER
+           ======================================================== */}
+        <div className={styles.sliderSection}>
+          <div className={styles.sliderHeader}>
+            <div className={styles.sliderHeaderLeft}>
+              <span className={styles.sliderIndex}>TRANSMISSION DETECTED: HIPPIE ALIEN SPECTRUM</span>
+              <h3 className={styles.sliderMainTitle}>THE COSMIC WANDERERS</h3>
+            </div>
+            <div className={styles.sliderDots}>
+              {ALIEN_IMAGES.map((_, idx) => (
+                <span 
+                  key={idx} 
+                  className={`${styles.sliderDot} ${activeIndex === idx ? styles.activeDot : ''}`}
+                  onClick={() => handleManualClick(idx)}
+                />
+              ))}
+            </div>
+          </div>
+          
+          <div className={styles.modelViewportContainer}>
+            <button className={styles.slideBtnLeft} onClick={() => handleArrowScroll('left')} aria-label="Slide Left">[ &lt; ]</button>
+            
+            <div ref={sliderRef} className={styles.modelStrip}>
+              {ALIEN_IMAGES.map((alien, idx) => (
+                <div 
+                  key={alien.id} 
+                  className={`${styles.modelCard} ${activeIndex === idx ? styles.activeCard : ''}`}
+                  onClick={() => handleManualClick(idx)}
+                  style={{ 
+                    // Dynamic drop shadow aura for active selections
+                    filter: activeIndex === idx 
+                      ? `drop-shadow(0 0 35px ${alien.glowColor}50) drop-shadow(0 0 15px ${alien.glowColor}30)` 
+                      : 'none'
+                  } as React.CSSProperties}
+                >
+                  <div className={styles.modelGridDots} />
+                  <div className={styles.modelScanline} />
+                  
+                  {/* Subtle index tag overlay */}
+                  <div className={styles.houseIndexTag}>{`ALIEN_${alien.id + 1}`}</div>
+                  
+                  <img 
+                    src={alien.image} 
+                    alt={alien.name}
+                    className={styles.modelImage}
+                  />
+                  
+                  <div className={styles.modelOverlayInfo}>
+                    <span className={styles.modelClass}>{alien.class}</span>
+                    <h4 className={styles.modelName}>{alien.name}</h4>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <button className={styles.slideBtnRight} onClick={() => handleArrowScroll('right')} aria-label="Slide Right">[ &gt; ]</button>
+          </div>
         </div>
       </div>
 
       {/* High-Fidelity Holographic Video Modal */}
-      {isModalOpen && (
+      {!showSliderOnly && isModalOpen && (
         <div className={styles.modalBackdrop} onClick={() => setIsModalOpen(false)}>
           <div 
             className={styles.modalContent} 

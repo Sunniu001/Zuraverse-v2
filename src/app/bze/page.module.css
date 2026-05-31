@@ -8,7 +8,7 @@
   background: #000000;
   color: #ffffff;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ─── Top Navigation Bezel ────────────────────────────────── */
@@ -334,6 +334,17 @@
   padding-left: 18px;
 }
 
+.heroNarrativeAccentInline {
+  font-style: italic;
+  color: #e2e8f0;
+  font-weight: 400;
+}
+
+.nirvanaKeyword {
+  font-weight: 600;
+  color: #38bdf8;
+}
+
 .scrollHint {
   font-family: var(--font-display);
   font-size: 0.72rem;
@@ -347,8 +358,21 @@
 .section {
   position: relative;
   width: 100%;
-  padding: 100px 5%;
+  padding: 70px 5%;
   overflow: hidden;
+}
+
+.sectionDivider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.08) 20%,
+    rgba(56, 189, 248, 0.3) 50%,
+    rgba(56, 189, 248, 0.08) 80%,
+    transparent 100%
+  );
 }
 
 .sectionDark {
@@ -648,23 +672,46 @@
 }
 
 /* ─── NIRVANA CINEMATIC PARALLAX ───────────────────────────── */
-.nirvanaCanvasContainer {
-  margin-top: 40px;
+.nirvanaOuterContainer {
   width: 100%;
+  padding: 0 5%;
+}
+
+.nirvanaCanvasContainer {
+  width: 100%;
+  position: relative;
+  height: 700vh; /* 2 locked scrolls + 4 zoom scrolls, then natural scroll to next section */
+}
+
+.nirvanaStickyViewport {
+  position: sticky;
+  top: calc(50vh - 12.85vw); /* Centers the 3.5:1 canvas (90vw wide) on screen */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
 }
 
 .parallaxCanvas {
   position: relative;
   width: 100%;
-  aspect-ratio: 3.5 / 1; /* Made slightly wider to feel less tall */
+  aspect-ratio: 3.5 / 1; /* Restore card aspect ratio */
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(56, 189, 248, 0.2);
   background: #000;
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), inset 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 -20px 80px rgba(0, 0, 0, 0.5);
+  
+  /* Transition: fade out on final scroll */
+  opacity: calc(1 - var(--blur-progress, 0));
+  will-change: opacity;
 }
 
 @media (max-width: 900px) {
+  .nirvanaStickyViewport {
+    top: calc(50vh - 22.5vw); /* Centers the 2:1 canvas on mobile */
+  }
   .parallaxCanvas {
     aspect-ratio: 2 / 1;
   }
@@ -688,23 +735,38 @@
   object-position: center;
 }
 
-/* Base mouse parallax shifts using --mx and --my (normalized -1 to 1) */
+/* Base mouse parallax shifts using --mx and --my (normalized -1 to 1) + scroll-based zoom */
 .pWrapBG {
-  transform: translate(calc(var(--mx, 0) * -5px), calc(var(--my, 0) * -5px));
+  transform: translate(calc(var(--mx, 0) * -5px), calc(var(--my, 0) * -5px)) scale(calc(1 + var(--zoom-progress, 0) * 0.08));
+  will-change: transform;
+}
+.pWrapBG .pLayerImg {
+  filter: blur(var(--blur-bg, 0px));
+  will-change: filter;
 }
 .pWrapL4 {
-  transform: translate(calc(var(--mx, 0) * -8px), calc(var(--my, 0) * -8px));
+  transform: translate(calc(var(--mx, 0) * -8px), calc(var(--my, 0) * -8px)) scale(calc(1 + var(--zoom-progress, 0) * 0.16));
+  will-change: transform;
+}
+.pWrapL4 .pLayerImg {
+  filter: blur(var(--blur-l4, 0px));
+  will-change: filter;
 }
 .pWrapL3 {
-  transform: translate(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -12px));
+  transform: translate(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -12px)) scale(calc(1 + var(--zoom-progress, 0) * 0.35));
+  will-change: transform;
 }
 .pWrapL2 {
-  /* Main character layer */
-  transform: translate(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -18px));
+  /* Main character layer — origin anchored to lower-center where character sits */
+  transform-origin: center 65%;
+  transform: translate(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -18px)) scale(calc(1 + var(--zoom-progress, 0) * 0.35));
+  will-change: transform;
 }
 .pWrapL1 {
-  /* Foreground elements */
-  transform: translate(calc(var(--mx, 0) * -25px), calc(var(--my, 0) * -25px));
+  /* Foreground elements — closest to camera */
+  transform-origin: center bottom;
+  transform: translate(calc(var(--mx, 0) * -25px), calc(var(--my, 0) * -25px)) scale(calc(1 + var(--zoom-progress, 0) * 0.50));
+  will-change: transform;
 }
 
 /* Zero Gravity Animations applied to the Images inside the wrappers */
@@ -791,4 +853,48 @@
 @keyframes fadeUpDown {
   0%, 100% { opacity: 0.5; transform: translateY(0); }
   50%       { opacity: 1;   transform: translateY(6px); }
+}
+
+/* ─── Stacked Layout & Linear Map ───────────────────── */
+.stackedLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.heroNarrativeRow {
+  display: flex;
+  gap: 40px;
+  max-width: 900px;
+}
+
+.heroNarrativeRow p {
+  flex: 1;
+}
+
+.stackedBottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.linearMapContainer {
+  width: 100%;
+  aspect-ratio: 16 / 5;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(8, 10, 24, 0.4) 0%, #030712 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .heroNarrativeRow {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .linearMapContainer {
+    aspect-ratio: 16 / 9;
+  }
 }

@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { useVortex } from '@/components/VortexTransition/VortexTransition';
+import { useLenis } from 'lenis/react';
 import styles from './EraTimelineSection.module.css';
 
 export default function EraTimelineSection() {
   const { triggerTransition } = useVortex();
+  const lenis = useLenis();
 
   const handleParallax = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -22,7 +24,7 @@ export default function EraTimelineSection() {
   };
 
     const scrollToZero = () => {
-      document.getElementById('arrival-of-zero')?.scrollIntoView({ behavior: 'smooth' });
+      lenis?.scrollTo('#arrival-of-zero');
     };
 
     return (

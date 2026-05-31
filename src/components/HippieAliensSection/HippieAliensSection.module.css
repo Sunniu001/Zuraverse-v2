@@ -612,3 +612,431 @@
   from { opacity: 0; transform: translateY(30px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ────────────────────────────────────────────────────────────
+   Dich-Fashion Styled Slider Section CSS Modules
+   ──────────────────────────────────────────────────────────── */
+.sliderSection {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1.5px solid rgba(167, 139, 250, 0.1);
+  padding-bottom: 20px;
+}
+
+.sliderHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sliderIndex {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #a78bfa;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.35);
+}
+
+.sliderMainTitle {
+  font-family: 'Orbitron', var(--font-orbitron), sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2.5px;
+  color: #f1f5f9;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sliderDots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.sliderDot {
+  width: 24px;
+  height: 3px;
+  background: rgba(148, 163, 184, 0.2);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.3, 1);
+  border-radius: 2px;
+}
+
+.sliderDot:hover {
+  background: rgba(167, 139, 250, 0.5);
+}
+
+.activeDot {
+  background: #2dd4bf;
+  box-shadow: 0 0 8px #2dd4bf;
+  width: 36px;
+}
+
+/* Viewport & Horizontal Strip */
+.modelViewportContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.modelStrip {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 40px 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.modelStrip::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+/* Sliding controls */
+.slideBtnLeft,
+.slideBtnRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(11, 8, 20, 0.8);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: #a78bfa;
+  font-family: var(--font-display), monospace;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 12px 16px;
+  cursor: pointer;
+  z-index: 25;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+}
+
+.slideBtnLeft {
+  left: -20px;
+}
+
+.slideBtnRight {
+  right: -20px;
+}
+
+.slideBtnLeft:hover,
+.slideBtnRight:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  transform: translateY(-50%) scale(1.05);
+}
+
+@media (max-width: 1100px) {
+  .slideBtnLeft { left: 5px; }
+  .slideBtnRight { right: 5px; }
+}
+
+/* Individual Model Card */
+.modelCard {
+  position: relative;
+  flex: 0 0 220px;
+  height: 380px;
+  background: radial-gradient(ellipse at center, rgba(16, 12, 32, 0.8) 0%, rgba(3, 1, 8, 0.95) 90%);
+  border: 1px solid rgba(167, 139, 250, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+/* Premium dotted backdrop within card matching Webflow reference */
+.modelGridDots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(167, 139, 250, 0.15) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.modelCard:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: scale(1.05) translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+}
+
+.activeCard {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08) translateY(-12px);
+  z-index: 15;
+}
+
+/* Neon Scanline Animation Sweep */
+.modelScanline {
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.2), transparent);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.modelCard:hover .modelScanline {
+  opacity: 1;
+  animation: scanlineSweep 2.5s linear infinite;
+}
+
+@keyframes scanlineSweep {
+  0% { top: -20%; }
+  100% { top: 120%; }
+}
+
+.houseIndexTag {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-family: var(--font-display), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: rgba(167, 139, 250, 0.4);
+  font-weight: bold;
+  z-index: 5;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.6);
+}
+
+.modelImage {
+  width: 100%;
+  height: 85%;
+  object-fit: contain;
+  z-index: 2;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+  transform-origin: bottom center;
+}
+
+.modelCard:hover .modelImage {
+  transform: scale(1.08);
+}
+
+.activeCard .modelImage {
+  transform: scale(1.12);
+  filter: brightness(1.1);
+}
+
+.modelOverlayInfo {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 60%, transparent);
+  padding: 10px 5px 0 5px;
+}
+
+.modelClass {
+  font-family: var(--font-display), monospace;
+  font-size: 0.52rem;
+  letter-spacing: 1.5px;
+  color: #2dd4bf;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.modelName {
+  font-family: 'Orbitron', var(--font-orbitron), sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ─── Sci-Fi Console Telemetry Readout ──────────────────────── */
+.consoleReadout {
+  width: 100%;
+  background: rgba(9, 7, 18, 0.85);
+  border: 1px solid rgba(167, 139, 250, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+
+.consoleGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr 1.6fr;
+  gap: 30px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .consoleGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.consoleColHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-right: 1px solid rgba(167, 139, 250, 0.1);
+  padding-right: 20px;
+}
+
+@media (max-width: 900px) {
+  .consoleColHeader {
+    border-right: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+    padding-right: 0;
+    padding-bottom: 15px;
+  }
+}
+
+.consoleTitle {
+  font-family: 'Orbitron', var(--font-orbitron), sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.consoleBlink {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: activeBlink 1s infinite alternate;
+}
+
+@keyframes activeBlink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.consoleSub {
+  font-family: var(--font-display), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+/* Stats list block */
+.consoleStatsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 1px solid rgba(167, 139, 250, 0.1);
+  padding-right: 20px;
+}
+
+@media (max-width: 900px) {
+  .consoleStatsBlock {
+    border-right: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+    padding-right: 0;
+    padding-bottom: 15px;
+  }
+}
+
+.statRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statVal {
+  font-family: 'Orbitron', var(--font-orbitron), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Telemetry progress bar */
+.barContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.barContainer span {
+  font-family: var(--font-display), monospace;
+}
+
+.barFill {
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.barPercent {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #ffffff;
+  min-width: 35px;
+}
+
+/* Lore record block */
+.consoleLoreBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loreLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 1.5px;
+  color: #64748b;
+  font-weight: bold;
+}
+
+.loreDesc {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
+  text-align: justify;
+}
+
+.sliderOnlySection {
+  padding: 60px 5% 60px 5% !important;
+  min-height: auto !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}

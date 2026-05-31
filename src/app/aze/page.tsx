@@ -2,15 +2,10 @@
 
 import React, { useRef, useEffect } from 'react';
 import { useVortex } from '@/components/VortexTransition/VortexTransition';
+import HippieAliensSection from '@/components/HippieAliensSection/HippieAliensSection';
 import styles from './page.module.css';
 
-const AZE_NARRATIVE = [
-  'The After Zurian Era (AZE) marks the dawn of a unified civilization.',
-  'Initiated by the majestic arrival of the Hippie Aliens on Planet Earth, this era gave birth to a highly evolved, symbiotic biopunk species known as the Zurians.',
-  'A monumental renaissance.',
-  'Combining human biology with cosmic genetics, the Zurians constructed a magnificent metaverse domain: the Zura Park.',
-  'Within this vibrant ecosystem, bioluminescent architecture, eco-energetics, and cybernetic fauna blend to preserve planetary balance.',
-];
+// Consolidated text arrays in favor of exact paragraph structures
 
 export default function AzePage() {
   const { triggerTransition } = useVortex();
@@ -112,30 +107,22 @@ export default function AzePage() {
           </div>
 
           <div className={styles.heroNarrative}>
-            {AZE_NARRATIVE.map((line, i) => {
-              // Check if it's the specific cyan word
-              const parts = line.split('Zurians');
-              
-              if (parts.length > 1) {
-                return (
-                  <p key={i} className={styles.heroSectionDesc}>
-                    {parts[0]}<span className={styles.highlightCyan}>Zurians</span>{parts[1]}
-                  </p>
-                );
-              }
-              
-              return (
-                <p
-                  key={i}
-                  className={`${line === 'A monumental renaissance.' ? styles.heroNarrativeAccent : styles.heroSectionDesc}`}
-                >
-                  {line}
-                </p>
-              );
-            })}
+            <p className={styles.heroSectionDesc}>
+              The After Zurian Era (AZE) marks the dawn of a unified civilization. Initiated by the majestic arrival of the <span className={styles.highlightCyan}>Hippie Aliens</span> on Planet Earth, this era gave birth to a highly evolved, symbiotic biopunk species known as the <span className={styles.highlightCyan}>Zurians</span>. <span className={styles.heroNarrativeAccentInline}>A monumental renaissance.</span>
+            </p>
+            <p className={styles.heroSectionDesc}>
+              Combining human biology with cosmic genetics, the <span className={styles.highlightCyan}>Zurians</span> constructed a magnificent metaverse domain: the Zura Park. Within this vibrant ecosystem, bioluminescent architecture, eco-energetics, and cybernetic fauna blend to preserve planetary balance.
+            </p>
           </div>
         </div>
       </section>
+
+      <div className={styles.sectionDivider} aria-hidden="true" />
+
+      {/* ═══════════════════════════════════════════════
+          THE HIPPIE ALIENS GALLERY
+      ═══════════════════════════════════════════════ */}
+      <HippieAliensSection showSliderOnly={true} />
 
       {/* ═══════════════════════════════════════════════
           FOOTER NAV

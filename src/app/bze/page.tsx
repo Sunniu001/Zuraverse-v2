@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useVortex } from '@/components/VortexTransition/VortexTransition';
+import UniverseMap from '@/components/UniverseMap/UniverseMap';
 import styles from './page.module.css';
 
 const HOUSES = [
@@ -52,23 +53,8 @@ const HOUSES = [
   },
 ];
 
-const LAST_CIVILIZATION_LINES = [
-  'These Hippie Aliens come from a distant future, near the outermost reaches of a dying universe.',
-  'By the time their civilization arose, countless species had already vanished. Stars had collapsed. Galaxies had grown old.',
-  'Among the silence, they endured.',
-  'Immortal and unaging, they became the last known civilization still wandering the cosmos.',
-  'Yet survival came with a burden.',
-  'To live forever meant watching everything else disappear.',
-];
+// Consolidated text arrays in favor of exact paragraph structures
 
-const NIRVANA_LINES = [
-  'Unable to find meaning in endless existence, the Hippie Aliens abandoned conquest, wealth and expansion.',
-  'Instead, they dedicated themselves to a singular pursuit:',
-  'Nirvana.',
-  'Not as a destination.',
-  'But as a state of harmony between consciousness, creativity and the universe itself.',
-  'They traveled from world to world collecting stories, music, art, philosophies and memories, believing that somewhere among the countless civilizations they encountered lay the answer they sought.',
-];
 
 function HouseCardItem({ house }: { house: any }) {
   // ... existing ...
@@ -125,28 +111,84 @@ function HouseCardItem({ house }: { house: any }) {
 function NirvanaParallaxCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-    
-    containerRef.current.style.setProperty('--mx', `${x}`);
-    containerRef.current.style.setProperty('--my', `${y}`);
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const parent = containerRef.current.parentElement;
+      const track = parent?.parentElement;
+      if (!track) return;
+      
+      const trackRect = track.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      const totalScrollable = trackRect.height - viewportHeight;
+      const currentScroll = -trackRect.top;
+      
+      let progress = 0;
+      if (currentScroll >= 0 && totalScrollable > 0) {
+        progress = Math.min(currentScroll / totalScrollable, 1);
+      }
+      
+      // ── PHASE 1 (0–33.3%): Camera locked, no zoom — 2 full viewport scrolls ──
+      // ── PHASE 2 (33.3–100%): Zoom begins gradually — 4 full scrolls ──
 
-  const handleMouseLeave = () => {
-    if (!containerRef.current) return;
-    containerRef.current.style.setProperty('--mx', `0`);
-    containerRef.current.style.setProperty('--my', `0`);
-  };
+      const zoomProgress = progress < 0.333
+        ? 0
+        : Math.min((progress - 0.333) / 0.667, 1);
+
+      // No fade out phase — we immediately let the page scroll to Section 4
+      const blurProgress = 0;
+
+      // Subtle DoF on background layers to simulate focus lock on the character
+      const blurBG = zoomProgress;
+      const blurL4 = zoomProgress;
+
+      containerRef.current.style.setProperty('--scroll-progress', `${progress}`);
+      containerRef.current.style.setProperty('--zoom-progress', `${zoomProgress}`);
+      containerRef.current.style.setProperty('--blur-progress', `${blurProgress}`);
+      containerRef.current.style.setProperty('--blur-canvas', `${(blurProgress * 4).toFixed(1)}px`);
+      containerRef.current.style.setProperty('--blur-l1', `0px`);
+      containerRef.current.style.setProperty('--blur-l2', `0px`);
+      containerRef.current.style.setProperty('--blur-l3', `0px`);
+      containerRef.current.style.setProperty('--blur-l4', `${(blurL4 * 2).toFixed(1)}px`);
+      containerRef.current.style.setProperty('--blur-bg', `${(blurBG * 4).toFixed(1)}px`);
+    };
+    
+    let ticking = false;
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current || ticking) return;
+      
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          const x = (clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+          const y = (clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+          
+          containerRef.current.style.setProperty('--mx', `${x}`);
+          containerRef.current.style.setProperty('--my', `${y}`);
+        }
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+    
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+    };
+  }, []);
 
   return (
     <div 
       className={styles.parallaxCanvas} 
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
       <div className={`${styles.pLayerWrap} ${styles.pWrapBG}`}>
         <img src="/Nirvana BG.png" alt="BG" className={styles.pLayerImg} />
@@ -274,30 +316,17 @@ export default function BzePage() {
           </div>
 
           <div className={styles.heroNarrative}>
-            {LAST_CIVILIZATION_LINES.map((line, i) => {
-              // Check if it's the specific cyan word
-              const parts = line.split('Hippie Aliens');
-              
-              if (parts.length > 1) {
-                return (
-                  <p key={i} className={styles.heroSectionDesc}>
-                    {parts[0]}<span className={styles.highlightCyan}>Hippie Aliens</span>{parts[1]}
-                  </p>
-                );
-              }
-              
-              return (
-                <p
-                  key={i}
-                  className={`${line === 'Among the silence, they endured.' || line === 'Yet survival came with a burden.' ? styles.heroNarrativeAccent : styles.heroSectionDesc}`}
-                >
-                  {line}
-                </p>
-              );
-            })}
+            <p className={styles.heroSectionDesc}>
+              These <span className={styles.highlightCyan}>Hippie Aliens</span> come from a distant future, near the outermost reaches of a dying universe. By the time their civilization arose, countless species had already vanished. Stars had collapsed. Galaxies had grown old. <span className={styles.heroNarrativeAccentInline}>Among the silence, they endured.</span>
+            </p>
+            <p className={styles.heroSectionDesc}>
+              Immortal and unaging, they became the last known civilization still wandering the cosmos. <span className={styles.heroNarrativeAccentInline}>Yet survival came with a burden.</span> To live forever meant watching everything else disappear.
+            </p>
           </div>
         </div>
       </section>
+
+      <div className={styles.sectionDivider} aria-hidden="true" />
 
       {/* ═══════════════════════════════════════════════
           SECTION 2 — THE HOUSES OF ZURA
@@ -307,8 +336,7 @@ export default function BzePage() {
           <div className={styles.sectionHeaderCenter}>
             <span className={styles.sectionEyebrowCenter}>SECTION 02</span>
             <h2 className={styles.sectionTitleCenter}>
-              THE HOUSES OF<br />
-              <span className={styles.titleGradient}>ZURA</span>
+              THE HOUSES OF <span className={styles.titleGradient}>ZURA</span>
             </h2>
             <div className={styles.sectionLineCenter} />
           </div>
@@ -325,6 +353,8 @@ export default function BzePage() {
         </div>
       </section>
 
+      <div className={styles.sectionDivider} aria-hidden="true" />
+
       {/* ═══════════════════════════════════════════════
           SECTION 3 — THE SEARCH FOR NIRVANA
       ═══════════════════════════════════════════════ */}
@@ -340,22 +370,67 @@ export default function BzePage() {
           </div>
 
           <div className={styles.heroNarrative}>
-            {NIRVANA_LINES.map((line, i) => (
-              <p
-                key={i}
-                className={`${line === 'Nirvana.' ? styles.nirvanaKeyword : line === 'Not as a destination.' || line === 'But as a state of harmony between consciousness, creativity and the universe itself.' ? styles.heroNarrativeAccent : styles.heroSectionDesc}`}
-              >
-                {line}
-              </p>
-            ))}
+            <p className={styles.heroSectionDesc}>
+              Unable to find meaning in endless existence, the <span className={styles.highlightCyan}>Hippie Aliens</span> abandoned conquest, wealth and expansion. Instead, they dedicated themselves to a singular pursuit: <span className={styles.nirvanaKeyword}>Nirvana</span>.
+            </p>
+            <p className={styles.heroSectionDesc}>
+              <span className={styles.heroNarrativeAccentInline}>Not as a destination. But as a state of harmony between consciousness, creativity and the universe itself.</span> They traveled from world to world collecting stories, music, art, philosophies and memories, believing that somewhere among the countless civilizations they encountered lay the answer they sought.
+            </p>
           </div>
         </div>
 
-        {/* Cinematic Parallax (Now aligned with container margins) */}
+      </section>
+
+      {/* Cinematic Parallax (Sticky track outside the padded section) */}
+      <div className={styles.nirvanaOuterContainer}>
         <div className={styles.nirvanaCanvasContainer}>
-          <NirvanaParallaxCanvas />
+          <div className={styles.nirvanaStickyViewport}>
+            <NirvanaParallaxCanvas />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.sectionDivider} aria-hidden="true" />
+
+      {/* ═══════════════════════════════════════════════
+          SECTION 4 — THE COSMIC WANDERERS
+      ═══════════════════════════════════════════════ */}
+      <section className={styles.section}>
+        <div className={styles.container}>
+          
+          <div className={styles.stackedLayout}>
+            
+            {/* Top Text */}
+            <div className={styles.stackedTop}>
+              <div className={styles.sectionHeaderLeft}>
+                <span className={styles.sectionEyebrowLeft}>SECTION 04</span>
+                <h2 className={styles.sectionTitleLeft}>
+                  THE COSMIC<br />
+                  <span className={styles.titleGradient}>WANDERERS</span>
+                </h2>
+              </div>
+              
+              <div className={styles.heroNarrativeRow}>
+                <p className={styles.heroSectionDesc}>
+                  Across millions of years, the <span className={styles.highlightCyan}>Hippie Aliens</span> crossed nebulae, wormholes and forgotten galaxies.
+                  They cultivated sanctuaries around dying stars, preserved endangered ecosystems, and archived extinct cultures.
+                </p>
+                <p className={styles.heroSectionDesc}>
+                  They transformed their vessels into traveling museums of the universe. Every journey expanded their knowledge.
+                  <br/><br/><span className={styles.heroNarrativeAccentInline}>Yet the answer remained elusive.</span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </section>
+
+      {/* Edge-to-Edge Full-width Map */}
+      <div className={styles.linearMapContainer}>
+        <UniverseMap />
+      </div>
 
       {/* ═══════════════════════════════════════════════
           FOOTER NAV

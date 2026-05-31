@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import 'lenis/dist/lenis.css';
 import VortexProvider from '@/components/VortexTransition/VortexTransition';
+import LenisProvider from '@/components/LenisProvider/LenisProvider';
 
 export const metadata: Metadata = {
   title: 'Zuraverse — Beyond The Event Horizon',
@@ -26,9 +28,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        <VortexProvider>
-          {children}
-        </VortexProvider>
+        <LenisProvider>
+          <VortexProvider>
+            {children}
+          </VortexProvider>
+        </LenisProvider>
       </body>
     </html>
   );
