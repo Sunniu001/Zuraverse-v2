@@ -29,24 +29,16 @@ export default function EraTimelineSection() {
 
     return (
       <section className={styles.section} id="cosmic-eras">
+        <div className={styles.sectionDivider} aria-hidden="true" />
         <div className={styles.gridOverlay} aria-hidden="true" />
   
-        {/* Terminal Bezel Top Bar */}
-        <div className={styles.terminalTopBar}>
-          <div className={styles.termLeft}>ZURAVERSE</div>
-          <div className={styles.termCenter}>
-            <div className={styles.termIndex}>| 03 |</div>
-            <div className={styles.termEyebrow}>TIMELINE</div>
-          </div>
-          <div className={styles.termRight}>
-            DATABASE TERMINAL
-            <span className={styles.termBeacon} />
-          </div>
-        </div>
   
         <div className={styles.container}>
           {/* Centered Main Header */}
           <div className={styles.header}>
+            <h2 className={styles.title}>
+              THE <span className={styles.titleGlow}>TIMELINE</span>
+            </h2>
             <div className={styles.subtitleBlock}>
               <p className={styles.lead}>
                 The Timeline of Zuraverse is divided into two Eras.
@@ -158,12 +150,8 @@ export default function EraTimelineSection() {
 
           </div>
 
-        {/* Bottom Scroll Indicator */}
-        <div className={styles.bottomScroll} aria-hidden="true">
-          <span className={styles.scrollStatusLamp} />
-          <span className={styles.scrollText}>SCROLL</span>
-        </div>
       </div>
+      <div className={styles.sectionDividerBottom} aria-hidden="true" />
     </section>
   );
 }

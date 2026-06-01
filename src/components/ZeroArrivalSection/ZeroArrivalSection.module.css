@@ -1,351 +1,1005 @@
 /* ────────────────────────────────────────────────────────────
-   ZeroArrivalSection CSS Module — Cinematic Video Edition
+   ZeroArrivalSection — Cinematic Horizontal Journey
    ──────────────────────────────────────────────────────────── */
 
-.section {
+/* ── Scene Mechanics ──────────────────────────────────────── */
+
+.sceneWrapper {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  padding: 110px 5% 100px 5%;
-  background: #000000;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(94, 234, 212, 0.08);
+  /* 1600vh gives double the scroll distance per chapter, making it slower */
+  height: 1600vh;
+  background: #000;
 }
 
-/* Subtle grid overlay */
-.gridOverlay {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(45, 212, 191, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(45, 212, 191, 0.018) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Large centered radial glow behind the video */
-.glowBloom {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80vw;
-  height: 80vw;
-  max-width: 900px;
-  max-height: 900px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(45, 212, 191, 0.05) 0%,
-    rgba(167, 139, 250, 0.03) 45%,
-    transparent 72%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Corner bracket decor */
-.corner {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid rgba(45, 212, 191, 0.25);
-  pointer-events: none;
-  z-index: 2;
-}
-.topLeft    { top: 30px;    left: 30px;   border-right: none; border-bottom: none; }
-.topRight   { top: 30px;    right: 30px;  border-left: none;  border-bottom: none; }
-.bottomLeft { bottom: 30px; left: 30px;   border-right: none; border-top: none;    }
-.bottomRight{ bottom: 30px; right: 30px;  border-left: none;  border-top: none;    }
-
-/* ─── Main Container ──────────────────────────────────────── */
-.container {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 56px;
-}
-
-/* ─── Header Block ────────────────────────────────────────── */
-.header {
-  text-align: center;
-  max-width: 720px;
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.eyebrowLine {
-  flex: 0 0 40px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.55), transparent);
-}
-
-.eyebrowText {
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  letter-spacing: 3px;
-  color: #2dd4bf;
-  text-shadow: 0 0 10px rgba(45, 212, 191, 0.4);
-  white-space: nowrap;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-  color: #ffffff;
-  margin-bottom: 28px;
-}
-
-.titleGlow {
-  background: linear-gradient(135deg, #2dd4bf 30%, #a78bfa 90%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 22px rgba(45, 212, 191, 0.45));
-}
-
-.description {
-  font-size: 1.25rem;
-  line-height: 1.75;
-  color: #94a3b8;
-  font-weight: 400;
-}
-
-/* ─── Video Outer Frame (clickable thumbnail) ─────────────── */
-.videoOuter {
-  position: relative;
-  width: 100%;
-  padding: 44px 0 36px 0;
-  background: rgba(8, 12, 18, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(45, 212, 191, 0.12);
-  border-radius: 16px;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(255, 255, 255, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.videoOuter:hover {
-  border-color: rgba(45, 212, 191, 0.35);
-  box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.95),
-    0 0 60px rgba(45, 212, 191, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-}
-
-/* Corner bracket decor on video frame */
-.videoCorner {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(45, 212, 191, 0.5);
-  z-index: 5;
-  pointer-events: none;
-  transition: border-color 0.3s;
-}
-.vcTopLeft    { top: 10px;    left: 10px;   border-right: none; border-bottom: none; }
-.vcTopRight   { top: 10px;    right: 10px;  border-left: none;  border-bottom: none; }
-.vcBottomLeft { bottom: 10px; left: 10px;   border-right: none; border-top: none;    }
-.vcBottomRight{ bottom: 10px; right: 10px;  border-left: none;  border-top: none;    }
-
-.videoOuter:hover .videoCorner {
-  border-color: rgba(45, 212, 191, 0.9);
-}
-
-/* Scanline texture */
-.scanSweep {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(0, 0, 0, 0.08) 3px,
-    rgba(0, 0, 0, 0.08) 4px
-  );
-  pointer-events: none;
-  z-index: 4;
-}
-
-/* Top bezel strip */
-.videoBezel {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 40px;
-  background: rgba(6, 10, 14, 0.92);
-  border-bottom: 1px solid rgba(45, 212, 191, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  z-index: 5;
-  padding: 0 20px;
-}
-
-.bezelDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #2dd4bf;
-  box-shadow: 0 0 8px #2dd4bf;
-  animation: beaconBlink 1.5s infinite alternate;
-  flex-shrink: 0;
-}
-
-.bezelLabel {
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  letter-spacing: 2.5px;
-  color: #475569;
-  font-weight: 600;
-}
-
-/* Bottom bezel strip */
-.videoBezelBottom {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 32px;
-  background: rgba(6, 10, 14, 0.92);
-  border-top: 1px solid rgba(45, 212, 191, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  z-index: 5;
-  padding: 0 20px;
-}
-
-.bezelStat {
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 2px;
-  color: #334155;
-}
-
-.bezelPulse {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #2dd4bf;
-  box-shadow: 0 0 6px #2dd4bf;
-  animation: beaconBlink 0.9s infinite alternate;
-  flex-shrink: 0;
-}
-
-/* ─── Thumbnail with Play Button ──────────────────────────── */
-.videoWrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+.stickyStage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
   background: #000;
 }
 
-.thumbnailImg {
+/* ── Starfield ─────────────────────────────────────────────── */
+
+.starfield {
   position: absolute;
   inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(10,20,50,0.85) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(5,0,20,0.80) 0%, transparent 50%),
+    linear-gradient(135deg, #010309 0%, #000000 55%, #010208 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top gradient line divider (matches EraTimeline style) */
+.topDivider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(45, 212, 191, 0.55) 30%,
+    rgba(167, 139, 250, 0.55) 70%,
+    transparent 100%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ── UI Chrome ──────────────────────────────────────────────── */
+
+/* Bottom progress bar */
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(45, 212, 191, 0.06);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #2dd4bf, #a78bfa);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.6);
+  transition: width 0.06s linear;
+}
+
+/* Chapter counter — top left */
+.chapterCounter {
+  position: absolute;
+  top: 36px;
+  left: 48px;
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.cntCur {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: rgba(45, 212, 191, 0.85);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(45, 212, 191, 0.4);
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.3, 1);
+  letter-spacing: 2px;
+}
+
+.cntSlash {
+  font-family: var(--font-display), monospace;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.15);
+  margin: 0 2px;
+}
+
+.cntTotal {
+  font-family: var(--font-display), monospace;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.18);
+  letter-spacing: 3px;
+}
+
+/* Section label — top right */
+.sectionLabel {
+  position: absolute;
+  top: 42px;
+  right: 48px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.sectionLabelTxt {
+  font-family: var(--font-display), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 3.5px;
+  color: rgba(148, 163, 184, 0.35);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sectionBeacon {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2dd4bf;
+  box-shadow: 0 0 8px #2dd4bf;
+  animation: beaconBlink 1.6s infinite alternate;
+}
+
+/* Trajectory SVG — bottom strip */
+.trajSvg {
+  position: absolute;
+  bottom: 36px;
+  left: 48px;
+  right: 48px;
+  width: calc(100% - 96px);
+  height: 60px;
+  z-index: 15;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Scroll hint */
+.scrollHint {
+  position: absolute;
+  bottom: 115px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.scrollHintGone {
+  opacity: 0;
+}
+
+.scrollHintTxt {
+  font-family: var(--font-display), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 4px;
+  color: rgba(148, 163, 184, 0.45);
+  text-transform: uppercase;
+  animation: scrollPulse 2.2s ease-in-out infinite;
+}
+
+.scrollHintLine {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, rgba(45, 212, 191, 0.5), transparent);
+  animation: scrollDrop 2.2s ease-in-out infinite;
+}
+
+/* ── Horizontal Track ──────────────────────────────────────── */
+
+.hTrack {
+  display: flex;
+  /* NUM chapters × 100vw */
+  width: 800vw;
+  height: 100vh;
+  will-change: transform;
+  transform: translateX(0);
+  position: relative;
+  z-index: 5;
+}
+
+/* ── Trailer Visual (Cinematic UI) ──────────────────────────── */
+
+.visTrailer {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.trailerBg {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(10, 15, 20, 0.9), rgba(5, 10, 15, 0.95)),
+    repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(45, 212, 191, 0.03) 19px, rgba(45, 212, 191, 0.03) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(45, 212, 191, 0.03) 19px, rgba(45, 212, 191, 0.03) 20px);
+  z-index: 0;
+}
+
+/* Floating HUD */
+.ambientSignal {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  background: rgba(10, 15, 20, 0.8);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.signalBars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+.signalBar {
+  width: 3px;
+  background: #2dd4bf;
+  animation: signalPulse 1.5s ease-in-out infinite alternate;
+}
+.signalBar:nth-child(1) { height: 60%; animation-delay: 0s; }
+.signalBar:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+.signalBar:nth-child(3) { height: 40%; animation-delay: 0.6s; }
+
+@keyframes signalPulse {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; box-shadow: 0 0 8px #2dd4bf; }
+}
+
+.signalText {
+  display: flex;
+  flex-direction: column;
+}
+
+.signalLabel {
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+
+.signalStatus {
+  font-size: 0.6rem;
+  color: #2dd4bf;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Main Frame */
+.trailerFrame {
+  position: relative;
+  width: 80%;
+  max-width: 900px;
+  aspect-ratio: 16/9;
+  background: #050a10;
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 20px rgba(45,212,191,0.05);
+}
+
+.cornerTL, .cornerTR, .cornerBL, .cornerBR {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(45, 212, 191, 0.4);
+  pointer-events: none;
+}
+.cornerTL { top: -1px; left: -1px; border-right: none; border-bottom: none; border-top-left-radius: 12px; }
+.cornerTR { top: -1px; right: -1px; border-left: none; border-bottom: none; border-top-right-radius: 12px; }
+.cornerBL { bottom: -1px; left: -1px; border-right: none; border-top: none; border-bottom-left-radius: 12px; }
+.cornerBR { bottom: -1px; right: -1px; border-left: none; border-top: none; border-bottom-right-radius: 12px; }
+
+/* Header */
+.trailerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  font-size: 0.6rem;
+  color: rgba(45, 212, 191, 0.6);
+  letter-spacing: 3px;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.1);
+}
+
+.trailerDot {
+  width: 6px;
+  height: 6px;
+  background: #2dd4bf;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #2dd4bf;
+}
+
+/* Video Content Area */
+.trailerContent {
+  flex: 1;
+  position: relative;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.trailerIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.trailerPoster {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.4s;
-  opacity: 1;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
 }
 
-.videoOuter:hover .thumbnailImg {
-  transform: scale(1.04);
-  opacity: 0.9;
+.trailerContent:hover .trailerPoster {
+  opacity: 0.85;
 }
 
-.thumbnailOverlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 0.05) 0%,
-    rgba(0, 0, 0, 0.28) 100%
-  );
-  z-index: 1;
-}
-
-/* Play button rings + button */
-.playButtonWrapper {
+.playOverlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.playCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #2dd4bf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 20, 30, 0.6);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+}
+
+.trailerContent:hover .playCircle {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(45, 212, 191, 0.4);
+  background: rgba(10, 20, 30, 0.8);
+}
+
+.playIconFilled {
+  width: 24px;
+  height: 24px;
+  color: #2dd4bf;
+  margin-left: 4px;
+}
+
+/* Footer */
+.trailerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+  border-top: 1px solid rgba(45, 212, 191, 0.1);
+  transition: color 0.3s ease;
+}
+
+.trailerContent:hover + .trailerFooter {
+  color: rgba(45, 212, 191, 0.6);
+}
+
+/* ── Chapter Panel ──────────────────────────────────────────── */
+
+.chPanel {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  align-items: center;
+  position: relative;
+}
+
+.chPanelActive {}
+
+/* Visual side */
+.panelVis {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Text side */
+.panelTxt {
+  padding: 0 72px 120px 52px;
+  opacity: 0;
+  transform: translateX(36px);
+  transition:
+    opacity  0.9s cubic-bezier(0.25, 1, 0.3, 1) 0.18s,
+    transform 0.9s cubic-bezier(0.25, 1, 0.3, 1) 0.18s;
+}
+
+.panelTxtActive {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Typography ──────────────────────────────────────────────── */
+
+.textMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.chapterId {
+  font-family: var(--font-display), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: #2dd4bf;
+  font-weight: 700;
+  text-shadow: 0 0 14px rgba(45, 212, 191, 0.55);
+  text-transform: uppercase;
+}
+
+.chapterDivider {
+  display: block;
+  flex: 0 0 38px;
+  height: 1px;
+  background: rgba(45, 212, 191, 0.3);
+}
+
+.chapterYear {
+  font-family: var(--font-display), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: rgba(148, 163, 184, 0.4);
+  text-transform: uppercase;
+}
+
+.chapterTitle {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.chapterBody {
+  font-size: 1rem;
+  line-height: 1.92;
+  color: #94a3b8;
+  margin-bottom: 22px;
+  max-width: 440px;
+  font-weight: 400;
+}
+
+.chapterMood {
+  font-family: var(--font-display), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 4px;
+  color: rgba(167, 139, 250, 0.42);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Watch CTA ──────────────────────────────────────────────── */
+
+.watchCta {
+  margin-top: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 38px;
+  background: rgba(45, 212, 191, 0.07);
+  border: 1.5px solid rgba(45, 212, 191, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.watchCta:hover {
+  background: rgba(45, 212, 191, 0.13);
+  border-color: #2dd4bf;
+  box-shadow: 0 0 45px rgba(45, 212, 191, 0.22), inset 0 0 20px rgba(45, 212, 191, 0.04);
+}
+
+.watchCta:hover .watchCtaLabel {
+  text-shadow: 0 0 18px rgba(45, 212, 191, 0.7);
+}
+
+.watchCtaPulse {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(45,212,191,0.07) 50%, transparent 100%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.watchCtaIcon {
+  width: 16px;
+  height: 16px;
+  color: #2dd4bf;
+  flex-shrink: 0;
+}
+
+.watchCtaLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 4px;
+  color: #2dd4bf;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(45, 212, 191, 0.45);
+  transition: text-shadow 0.3s;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Visual Container (shared)
+   ───────────────────────────────────────────────────────────── */
+
+.vis {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Shared star bg for visual panels */
+.starBg {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Visual tag label at bottom */
+.visTag {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-display), monospace;
+  font-size: 0.52rem;
+  letter-spacing: 3.5px;
+  color: rgba(45, 212, 191, 0.32);
+  font-weight: 600;
+  text-transform: uppercase;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── CH01 · Voyager ────────────────────────────────────────── */
+
+.visVoyager {
+  background: radial-gradient(ellipse at 55% 45%, #0b1930 0%, #000815 100%);
+  overflow: visible;
+}
+
+.launchPad {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40vh;
   z-index: 2;
 }
 
-.playRingOuter {
+.earthHorizon {
   position: absolute;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(45, 212, 191, 0.3);
-  animation: pulseRing 2.5s ease-out infinite;
+  bottom: -20vh;
+  left: -20%;
+  width: 140%;
+  height: 40vh;
+  background: radial-gradient(ellipse at center top, #1e3a8a 0%, #020617 100%);
+  border-radius: 50% 50% 0 0;
+  border-top: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 -20px 80px rgba(56, 189, 248, 0.1);
 }
 
-.playRingInner {
+.launchTower {
   position: absolute;
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-  border: 1px dashed rgba(45, 212, 191, 0.2);
-  animation: spinSlow 18s linear infinite;
+  bottom: 10vh;
+  left: 20%;
+  width: 30px;
+  height: 220px;
+  background: repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px),
+              linear-gradient(90deg, #334155, #1e293b);
+  border-radius: 2px 2px 0 0;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.playButton {
+.launchAssembly {
+  position: absolute;
+  bottom: 10vh;
+  left: 25%;
+  z-index: 10;
+}
+
+.rocketStage {
+  position: relative;
+}
+
+.rocketSvg {
+  width: 40px;
+  height: 200px;
+  display: block;
+}
+
+.rocketFlame {
+  position: absolute;
+  bottom: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 50px;
+  background: linear-gradient(to bottom, #fef08a, #f97316, transparent);
+  border-radius: 50% 50% 20% 20%;
+  animation: rocketBurn 0.08s infinite alternate;
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.8);
+}
+
+@keyframes rocketBurn {
+  0% { height: 45px; opacity: 0.9; }
+  100% { height: 65px; opacity: 1; }
+}
+
+.voyagerPayload {
+  position: absolute;
+  bottom: 200px;
+  left: -80px;
+  z-index: 15;
+  transform-origin: 100px 140px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.voyagerSvg {
+  width: 200px;
+  height: 140px;
+  filter: drop-shadow(0 0 15px rgba(45, 212, 191, 0.4));
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* ── CH02 · Discovered ─────────────────────────────────────── */
+
+.visDiscovered {
+  background: radial-gradient(ellipse at 28% 50%, #1a0a2e 0%, #0a0515 60%, #000 100%);
+}
+
+.galaxyMapWrap {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%) translateX(100px);
+  width: 500px;
+  height: 500px;
+  opacity: 0;
+  transition:
+    transform 1.4s cubic-bezier(0.22, 1, 0.3, 1) 0.25s,
+    opacity   1.4s ease 0.25s;
+  z-index: 5;
+  perspective: 1000px;
+}
+
+.galaxyMapIn {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+
+.galaxyMap3D {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotateX(65deg) rotateY(-10deg) rotateZ(15deg);
+  transform-style: preserve-3d;
+  animation: mapFloat 20s ease-in-out infinite;
+}
+
+.galaxyCore {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167,139,250,0.8) 0%, rgba(45,212,191,0.2) 60%, transparent 100%);
+  box-shadow: 0 0 60px rgba(167,139,250,0.6);
+  animation: corePulse 4s ease-in-out infinite;
+}
+
+.galaxyRing {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px dashed rgba(45, 212, 191, 0.3);
+}
+
+.ring1 { width: 220px; height: 220px; animation: ringSpin 30s linear infinite; }
+.ring2 { width: 340px; height: 340px; border-color: rgba(167, 139, 250, 0.2); animation: ringSpin 45s linear infinite reverse; }
+.ring3 { width: 460px; height: 460px; border-style: solid; border-color: rgba(45, 212, 191, 0.1); border-width: 2px; animation: ringSpin 60s linear infinite; box-shadow: inset 0 0 40px rgba(45,212,191,0.05); }
+
+.poiNode {
+  position: absolute;
+  transform: translate(-50%, -50%) rotateX(-65deg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.poiDot {
+  width: 6px; height: 6px;
+  background: #2dd4bf;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #2dd4bf;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.poiDot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(45,212,191,0.5);
+  animation: nodePing 2s ease-out infinite;
+}
+
+.poiLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  color: rgba(45, 212, 191, 0.9);
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: rgba(0,0,0,0.4);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.signalIntercept {
+  position: absolute;
+  transform: translate(-50%, -50%) rotateX(-65deg);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.interceptPing {
+  width: 12px; height: 12px;
+  background: #fbbf24;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #fbbf24;
+  animation: signalPing 1.5s ease-out infinite;
+}
+
+.interceptLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.5rem; letter-spacing: 2px;
+  color: #fbbf24; text-shadow: 0 0 5px rgba(251,191,36,0.5);
+  background: rgba(0,0,0,0.6); padding: 4px 8px; border: 1px solid rgba(251,191,36,0.3); border-radius: 4px;
+}
+
+.radarSweep {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 50%; height: 50%;
+  background: linear-gradient(to right, transparent, rgba(45,212,191,0.1));
+  transform-origin: bottom left;
+  animation: sweepRadar 8s linear infinite;
+  border-right: 2px solid rgba(45,212,191,0.4);
+  border-radius: 0 100% 0 0;
+}
+
+.hologramGroup {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  transform: translateY(-58%);
+  z-index: 4;
+}
+
+.hologramDisc {
   width: 68px;
   height: 68px;
   border-radius: 50%;
-  background: rgba(45, 212, 191, 0.12);
-  border: 2px solid rgba(45, 212, 191, 0.6);
+  background: conic-gradient(
+    rgba(251,191,36,0.7), rgba(180,83,9,0.45),
+    rgba(251,191,36,0.7), rgba(180,83,9,0.45),
+    rgba(251,191,36,0.7)
+  );
+  animation: spinRecord 8s linear infinite;
+  box-shadow: 0 0 28px rgba(251,191,36,0.28);
+  opacity: 0.65;
+}
+
+.hologramBeam {
+  position: absolute;
+  top: -88px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 88px;
+  background: linear-gradient(to top, rgba(251,191,36,0.28), transparent);
+  filter: blur(5px);
+  animation: hologramPulse 2.2s ease-in-out infinite;
+}
+
+.hologramRingA {
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  border: 1px solid rgba(251,191,36,0.14);
+  animation: expandRing 2.2s ease-out infinite;
+}
+
+.hologramRingB {
+  position: absolute;
+  inset: -44px;
+  border-radius: 50%;
+  border: 1px solid rgba(251,191,36,0.07);
+  animation: expandRing 2.2s ease-out 0.8s infinite;
+}
+
+/* ── CH03 · Fleet ──────────────────────────────────────────── */
+
+.visFleet {
+  background: radial-gradient(ellipse at 50% 50%, #060d1c 0%, #000 80%);
+}
+
+.fleetImageWrap {
+  position: absolute;
+  inset: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(8px);
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.3, 1);
-  box-shadow: 0 0 30px rgba(45, 212, 191, 0.25);
+  z-index: 5;
+  opacity: 0;
+  transform: translateX(100px) scale(0.95);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.3, 1) 0.2s;
 }
 
-.videoOuter:hover .playButton {
-  background: rgba(45, 212, 191, 0.22);
-  border-color: #2dd4bf;
-  box-shadow: 0 0 50px rgba(45, 212, 191, 0.5);
-  transform: scale(1.1);
+.fleetImageIn {
+  opacity: 1;
+  transform: translateX(0) scale(1);
 }
 
-.playIcon {
-  width: 26px;
-  height: 26px;
-  color: #2dd4bf;
-  margin-left: 4px; /* optical centering */
-  filter: drop-shadow(0 0 8px rgba(45, 212, 191, 0.6));
+.fleetImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 50px rgba(167, 139, 250, 0.15));
+  border-radius: 12px;
 }
 
-/* ─── Modal Overlay ───────────────────────────────────────── */
+.fleetGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.15) 0%, transparent 65%);
+  pointer-events: none;
+  animation: backlightPulse 4s ease-in-out infinite;
+}
+
+/* ── CH04 · Titania ────────────────────────────────────────── */
+
+.visTitania {
+  background: #000;
+}
+
+.titaniaImageWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titaniaImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  mix-blend-mode: screen;
+}
+
+/* ── CH05 · Zero ───────────────────────────────────────────── */
+
+.visZero {
+  background: #000;
+}
+
+.zeroImageWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zeroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+/* ── CH06 · Earth ──────────────────────────────────────────── */
+
+.visEarth {
+  background: #000;
+}
+
+.earthImageWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.earthImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+/* ── CH07 · Contact ────────────────────────────────────────── */
+
+.visContact {
+  background: #000;
+}
+
+.contactImageWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+/* ── Modal ──────────────────────────────────────────────────── */
+
 .modalBackdrop {
   position: fixed;
   inset: 0;
@@ -360,20 +1014,20 @@
   animation: fadeIn 0.35s ease-out forwards;
 }
 
-.modalContent {
+.modalBox {
   width: 100%;
   max-width: 960px;
   background: #070c10;
   border: 1.5px solid rgba(45, 212, 191, 0.22);
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow:
-    0 40px 90px rgba(0, 0, 0, 0.98),
-    0 0 50px rgba(45, 212, 191, 0.12);
+    0 40px 90px rgba(0,0,0,0.98),
+    0 0 55px rgba(45,212,191,0.10);
   animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.3, 1) forwards;
 }
 
-.modalHeader {
+.modalHead {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -382,20 +1036,20 @@
   padding: 16px 24px;
 }
 
-.modalTitle {
-  font-family: var(--font-display);
-  font-size: 0.68rem;
+.modalLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
   letter-spacing: 2.5px;
   color: #2dd4bf;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
+  text-shadow: 0 0 10px rgba(45,212,191,0.3);
 }
 
 .closeBtn {
   background: none;
   border: none;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255,255,255,0.45);
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -405,10 +1059,10 @@
 .closeBtn:hover {
   color: #ef4444;
   transform: rotate(90deg);
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  text-shadow: 0 0 10px rgba(239,68,68,0.5);
 }
 
-.modalVideoWrapper {
+.modalFrame {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -423,21 +1077,143 @@
   border: none;
 }
 
-/* ─── Animations ──────────────────────────────────────────── */
+/* ── Mobile Fallback ───────────────────────────────────────── */
+
+.mobileFallback {
+  position: relative;
+  background: #000;
+  padding: 80px 6% 80px;
+  border-top: 1px solid rgba(45, 212, 191, 0.15);
+  border-bottom: 1px solid rgba(45, 212, 191, 0.07);
+  overflow: hidden;
+}
+
+.mobileHd {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.mobileEye {
+  display: block;
+  font-family: var(--font-display), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 4px;
+  color: #2dd4bf;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  text-shadow: 0 0 12px rgba(45,212,191,0.4);
+}
+
+.mobileBigTitle {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: clamp(2.4rem, 10vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.mobileTitleGlow {
+  background: linear-gradient(135deg, #2dd4bf 30%, #a78bfa 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 22px rgba(45,212,191,0.4));
+}
+
+.mobileChap {
+  border-left: 2px solid rgba(45, 212, 191, 0.14);
+  padding: 24px 0 24px 26px;
+  margin-bottom: 6px;
+}
+
+.mobileChTitle {
+  font-family: var(--font-display), monospace;
+  font-size: clamp(1.1rem, 4.5vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+
 @keyframes beaconBlink {
-  0%   { opacity: 0.3; }
-  100% { opacity: 1;   }
+  0%   { opacity: 0.28; }
+  100% { opacity: 1;    }
 }
 
-@keyframes pulseRing {
-  0%   { transform: scale(1);    opacity: 0.6; }
-  70%  { transform: scale(1.35); opacity: 0;   }
-  100% { transform: scale(1.35); opacity: 0;   }
-}
-
-@keyframes spinSlow {
+@keyframes spinRecord {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+@keyframes recordPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1);    }
+  50%       { opacity: 1;    transform: scale(1.06); }
+}
+
+@keyframes shipLightBlink {
+  0%   { opacity: 0.35; }
+  100% { opacity: 1;    }
+}
+
+@keyframes hologramPulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes expandRing {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  100% { transform: scale(1.55); opacity: 0;   }
+}
+
+@keyframes vesselPulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(45,212,191,0.4); }
+  50%       { box-shadow: 0 0 16px rgba(45,212,191,0.85); }
+}
+
+@keyframes backlightPulse {
+  0%, 100% { opacity: 0.65; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes orbitSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes cloudDrift {
+  from { background-position: 0% 0%, 0% 0%, 0% 0%; }
+  to   { background-position: 100% 0%, 80% 0%, 60% 0%; }
+}
+
+@keyframes indiaPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1);    }
+  50%       { opacity: 1;    transform: scale(1.35); }
+}
+
+@keyframes beamSway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%       { transform: rotate(4deg); }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%);  }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.75; }
+}
+
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0);  transform-origin: top;    }
+  50%  { transform: scaleY(1);  transform-origin: top;    }
+  51%  { transform: scaleY(1);  transform-origin: bottom; }
+  100% { transform: scaleY(0);  transform-origin: bottom; }
 }
 
 @keyframes fadeIn {
@@ -446,7 +1222,37 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(32px) scale(0.96); }
+  from { opacity: 0; transform: translateY(28px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
+@keyframes mapFloat {
+  0%, 100% { transform: rotateX(65deg) rotateY(-10deg) rotateZ(15deg); }
+  50%       { transform: rotateX(62deg) rotateY(-6deg)  rotateZ(18deg); }
+}
+
+@keyframes corePulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(167,139,250,0.5); transform: translate(-50%, -50%) scale(1); }
+  50%       { box-shadow: 0 0 80px rgba(167,139,250,0.9); transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes ringSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes nodePing {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes signalPing {
+  0%   { box-shadow: 0 0 0 0 rgba(251,191,36,0.7); }
+  70%  { box-shadow: 0 0 0 15px rgba(251,191,36,0); }
+  100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+}
+
+@keyframes sweepRadar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

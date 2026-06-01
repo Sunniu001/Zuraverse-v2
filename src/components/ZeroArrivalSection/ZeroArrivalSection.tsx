@@ -1,123 +1,719 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './ZeroArrivalSection.module.css';
 
-export default function ZeroArrivalSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+// ─────────────────────────────────────────────────────────────
+// Chapter Data
+// ─────────────────────────────────────────────────────────────
 
-  const openModal  = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+interface Chapter {
+  id: string;
+  title: string;
+  year: string;
+  body: string;
+  mood: string;
+  visual: string;
+  isFinal?: boolean;
+}
+
+const CHAPTERS: Chapter[] = [
+  {
+    id: '01',
+    title: 'THE VOYAGER LAUNCH',
+    year: '1977',
+    body: 'Humanity launched the Voyager spacecraft aboard a Titan IIIE rocket. The mission was to explore the outer planets and cast a message into the cosmic ocean.',
+    mood: 'Launch · Exploration',
+    visual: 'voyager',
+  },
+  {
+    id: '02',
+    title: 'DISCOVERED',
+    year: 'THOUSANDS OF YEARS LATER',
+    body: 'At the edge of the Milky Way, an ancient civilization intercepted the signal. The Golden Record hologram expanded across the void.',
+    mood: 'Wonder · Discovery',
+    visual: 'discovered',
+  },
+  {
+    id: '03',
+    title: 'THE RESONANCE FLEET',
+    year: 'THE RESPONSE',
+    body: 'Ten thousand vessels emerged from hyperspace. What began as a discovery became a civilizational event spanning thousands of light years.',
+    mood: 'Epic · Civilizational',
+    visual: 'fleet',
+  },
+  {
+    id: '04',
+    title: 'TITANIA',
+    year: 'FIRST APPROACH',
+    body: 'The fleet established a temporary outpost on Titania — a moon of Uranus. The first reconnaissance team was assembled. Departure was imminent.',
+    mood: 'Preparation · Anticipation',
+    visual: 'titania',
+  },
+  {
+    id: '05',
+    title: 'ZERO',
+    year: 'SCOUT DESIGNATION',
+    body: "Selected for Earth's first covert observation mission. His identity: classified. His mission: everything.",
+    mood: 'Mystery',
+    visual: 'zero',
+  },
+  {
+    id: '06',
+    title: 'EARTH',
+    year: 'DESTINATION LOCKED',
+    body: 'Destination: Earth\nLocation: India\nMission: Observe humanity.\nWithout detection.',
+    mood: 'Arrival',
+    visual: 'earth',
+  },
+  {
+    id: '07',
+    title: 'FIRST CONTACT',
+    year: 'THE EVENT',
+    body: 'What happened next became one of the most important events in Zuraverse history.',
+    mood: 'History',
+    visual: 'contact',
+  },
+  {
+    id: '08',
+    title: 'THE ARRIVAL OF ZERO',
+    year: 'CINEMATIC TRAILER',
+    body: 'Witness the event that changed the trajectory of the Zuraverse forever.',
+    mood: 'Epic',
+    visual: 'trailer',
+    isFinal: true,
+  },
+];
+
+const NUM = CHAPTERS.length;
+
+// ─────────────────────────────────────────────────────────────
+// Visual Sub-Components
+// ─────────────────────────────────────────────────────────────
+
+function VoyagerVisual({ active, scrollProgress }: { active: boolean; scrollProgress: number }) {
+  // Launch sequence logic:
+  // Launch completes later, over the first 5% of scroll
+  const launchProgress = Math.min(scrollProgress / 0.05, 1);
+  const flyProgress = Math.max(0, scrollProgress - 0.05) * (1 / 0.95);
+  
+  // Curved trajectory - wide curve to cross into the right panel before separation
+  const rocketY = -Math.sin(launchProgress * Math.PI / 2) * 40; // Ease out up to -40vh
+  const rocketX = Math.pow(launchProgress, 2) * 45; // Curve right up to 45vw
+  const rocketRot = Math.pow(launchProgress, 1.5) * 65; // Pitch right up to 65deg
+
+  const voyagerRot = rocketRot + Math.min(flyProgress * 2000, 25); // Finishes rotation to 90deg
+
+  // Voyager flies 700vw right in world space. Since world scrolls 600vw left, Voyager drifts 100vw right on screen!
+  const voyagerX = flyProgress * 700;
+
+  // Fade out Voyager as it reaches Chapter 2 (starts fading at 13%, gone by 17%)
+  const voyagerOpacity = scrollProgress > 0.13 ? Math.max(0, 1 - (scrollProgress - 0.13) * 25) : 1;
 
   return (
-    <section className={styles.section} id="arrival-of-zero">
-      <div className={styles.gridOverlay} aria-hidden="true" />
-
-      {/* Ambient corner bracket decor */}
-      <div className={`${styles.corner} ${styles.topLeft}`}    aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.topRight}`}   aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.bottomLeft}`} aria-hidden="true" />
-      <div className={`${styles.corner} ${styles.bottomRight}`}aria-hidden="true" />
-
-      {/* Top radial glow bloom */}
-      <div className={styles.glowBloom} aria-hidden="true" />
-
-      <div className={styles.container}>
-
-        {/* Section Header */}
-        <div className={styles.header}>
-          <h2 className={styles.title}>
-            Arrival of <span className={styles.titleGlow}>Zero</span>
-          </h2>
-          <p className={styles.description}>
-            Zero is not just a traveler — he is the ultimate dimensional catalyst. An enigmatic 
-            wanderer who bridged the gap between natural magic and digital cybernetics, 
-            shattering the traditional timeline and triggering the massive Zura portal convergence.
-          </p>
-        </div>
-
-        {/* Cinematic Video Frame — click to open modal */}
-        <div className={styles.videoOuter} onClick={openModal} role="button" tabIndex={0}
-          onKeyDown={e => e.key === 'Enter' && openModal()}
-          aria-label="Play Arrival of Zero video"
-        >
-          {/* Decorative corner brackets */}
-          <div className={`${styles.videoCorner} ${styles.vcTopLeft}`} />
-          <div className={`${styles.videoCorner} ${styles.vcTopRight}`} />
-          <div className={`${styles.videoCorner} ${styles.vcBottomLeft}`} />
-          <div className={`${styles.videoCorner} ${styles.vcBottomRight}`} />
-
-          {/* Scanning line texture */}
-          <div className={styles.scanSweep} aria-hidden="true" />
-
-          {/* Top bezel strip */}
-          <div className={styles.videoBezel}>
-            <span className={styles.bezelDot} />
-            <span className={styles.bezelLabel}>ZURAVERSE // ARRIVAL CHRONICLE FEED</span>
-            <span className={styles.bezelDot} />
-          </div>
-
-          {/* YouTube thumbnail with play button overlay */}
-          <div className={styles.videoWrapper}>
-            <img
-              src="https://img.youtube.com/vi/v3Yc5UcHZmk/maxresdefault.jpg"
-              alt="Arrival of Zero – Zuraverse Chronicle"
-              className={styles.thumbnailImg}
-            />
-
-            {/* Dark overlay on thumbnail */}
-            <div className={styles.thumbnailOverlay} />
-
-            {/* Centered play button */}
-            <div className={styles.playButtonWrapper}>
-              <div className={styles.playRingOuter} />
-              <div className={styles.playRingInner} />
-              <div className={styles.playButton}>
-                <svg viewBox="0 0 24 24" className={styles.playIcon}>
-                  <path d="M8 5v14l11-7z" fill="currentColor" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bezel strip */}
-          <div className={styles.videoBezelBottom}>
-            <span className={styles.bezelStat}>CLICK TO PLAY TRANSMISSION</span>
-            <span className={styles.bezelPulse} />
-          </div>
-        </div>
-
+    <div className={`${styles.vis} ${styles.visVoyager} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      
+      {/* Earth Surface (Cape Canaveral) */}
+      <div className={styles.launchPad} style={{ transform: `translateY(${launchProgress * 30}vh)` }}>
+        <div className={styles.earthHorizon} />
+        <div className={styles.launchTower} />
       </div>
 
-      {/* ── YouTube Modal ───────────────────────────────────── */}
-      {isModalOpen && (
-        <div className={styles.modalBackdrop} onClick={closeModal}>
-          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+      <div className={styles.launchAssembly} style={{ transform: `translateY(${rocketY}vh) translateX(${rocketX}vw)` }}>
+        
+        {/* Rocket Stage (drops away after launch) */}
+        <div 
+          className={styles.rocketStage} 
+          style={{ 
+            opacity: launchProgress >= 1 ? 0 : 1, 
+            transform: `rotate(${rocketRot}deg) ${launchProgress >= 1 ? 'translateY(100vh)' : ''}`, 
+            transition: launchProgress >= 1 ? 'opacity 0.8s ease, transform 1.5s cubic-bezier(0.5, 0, 1, 0)' : 'none'
+          }}
+        >
+          <svg viewBox="0 0 40 200" className={styles.rocketSvg}>
+            {/* Boosters & Core */}
+            <rect x="4" y="80" width="8" height="120" fill="#cbd5e1" rx="4" />
+            <rect x="28" y="80" width="8" height="120" fill="#cbd5e1" rx="4" />
+            <rect x="12" y="40" width="16" height="160" fill="#f8fafc" />
+            <polygon points="12,200 16,210 24,210 28,200" fill="#64748b" />
+            {/* Fairing */}
+            <polygon points="12,40 20,0 28,40" fill="#f1f5f9" />
+          </svg>
+          <div className={styles.rocketFlame} />
+        </div>
 
-            <div className={styles.modalHeader}>
-              <span className={styles.modalTitle}>ARRIVAL CHRONICLE // DIMENSIONAL CATALYST</span>
-              <button
-                className={styles.closeBtn}
-                onClick={closeModal}
-                aria-label="Close video"
-              >
-                ×
-              </button>
-            </div>
+        {/* Voyager Payload */}
+        <div 
+          className={styles.voyagerPayload} 
+          style={{ 
+            opacity: voyagerOpacity,
+            transform: `translateX(${voyagerX}vw) rotate(${voyagerRot}deg)`
+          }}
+        >
+          {launchProgress >= 1 && (
+            <svg className={styles.voyagerSvg} viewBox="0 0 200 140" fill="none">
+              {/* Main bus body */}
+              <rect x="88" y="55" width="24" height="45" fill="#475569" rx="2" />
+              <rect x="84" y="68" width="32" height="10" fill="#64748b" rx="1" />
+              <circle cx="100" cy="77" r="16" fill="#94a3b8" />
+              
+              {/* High-gain antenna (dish) */}
+              <path d="M50 55 C80 30, 120 30, 150 55 C120 45, 80 45, 50 55 Z" fill="#cbd5e1" />
+              <path d="M96 55 L90 35 L100 48 L110 35 L104 55" stroke="#94a3b8" strokeWidth="2" strokeLinejoin="round" />
+              
+              {/* Solar panels left */}
+              <rect x="20" y="72" width="64" height="7" fill="#334155" rx="3" />
+              <rect x="14" y="65" width="18" height="21" fill="#1e293b" rx="2" />
+              
+              {/* Solar panels right */}
+              <rect x="116" y="72" width="64" height="7" fill="#334155" rx="3" />
+              <rect x="168" y="65" width="18" height="21" fill="#1e293b" rx="2" />
+              
+              {/* Antenna */}
+              <line x1="100" y1="33" x2="100" y2="60" stroke="#64748b" strokeWidth="1.5" />
+              <circle cx="100" cy="29" r="8" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
+              <circle cx="100" cy="29" r="3" fill="#94a3b8" />
+              
+              {/* Thruster glow */}
+              <ellipse cx="100" cy="102" rx="10" ry="4" fill="#2dd4bf" opacity="0.6" />
+            </svg>
+          )}
+        </div>
+      </div>
+      
+      <div className={styles.visTag}>TITAN IIIE · VOYAGER LAUNCH</div>
+    </div>
+  );
+}
 
-            <div className={styles.modalVideoWrapper}>
+function DiscoveredVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visDiscovered} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      
+      {/* 3D Interactive Galaxy Map */}
+      <div className={`${styles.galaxyMapWrap} ${active ? styles.galaxyMapIn : ''}`}>
+        <div className={styles.galaxyMap3D}>
+          <div className={styles.galaxyCore} />
+          
+          {/* Milky Way Rings */}
+          <div className={`${styles.galaxyRing} ${styles.ring1}`} />
+          <div className={`${styles.galaxyRing} ${styles.ring2}`} />
+          <div className={`${styles.galaxyRing} ${styles.ring3}`} />
+          
+          {/* POI: Zerarth Star System */}
+          <div className={styles.poiNode} style={{ top: '40%', left: '60%' }}>
+            <div className={styles.poiDot} />
+            <div className={styles.poiLabel}>ZERARTH STAR SYSTEM</div>
+          </div>
+          
+          {/* POI: Andromeda */}
+          <div className={styles.poiNode} style={{ top: '15%', left: '25%' }}>
+            <div className={styles.poiDot} style={{ background: '#a78bfa', boxShadow: '0 0 10px #a78bfa' }} />
+            <div className={styles.poiLabel} style={{ color: '#a78bfa' }}>ANDROMEDA GALAXY</div>
+          </div>
+
+          {/* POI: Milky Way Border */}
+          <div className={styles.poiNode} style={{ top: '85%', left: '45%' }}>
+            <div className={styles.poiDot} />
+            <div className={styles.poiLabel}>MILKY WAY BORDER</div>
+          </div>
+          
+          {/* Signal Intercept */}
+          <div className={styles.signalIntercept} style={{ top: '75%', left: '80%' }}>
+            <div className={styles.interceptPing} />
+            <div className={styles.interceptLabel}>SIGNAL DETECTED</div>
+          </div>
+
+          {/* Radar Sweep */}
+          <div className={styles.radarSweep} />
+        </div>
+      </div>
+
+      <div className={styles.hologramGroup}>
+        <div className={styles.hologramDisc} />
+        <div className={styles.hologramBeam} />
+        <div className={styles.hologramRingA} />
+        <div className={styles.hologramRingB} />
+      </div>
+      <div className={styles.visTag}>EDGE OF THE MILKY WAY</div>
+    </div>
+  );
+}
+
+function FleetVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visFleet} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      <div className={`${styles.fleetImageWrap} ${active ? styles.fleetImageIn : ''}`}>
+        <img
+          src="/images/fleet.jpg"
+          alt="The Resonance Fleet"
+          className={styles.fleetImage}
+        />
+        <div className={styles.fleetGlow} />
+      </div>
+      <div className={styles.visTag}>RESONANCE FLEET · 10,000 VESSELS</div>
+    </div>
+  );
+}
+
+function TitaniaVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visTitania} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      <div className={styles.titaniaImageWrap}>
+        <img src="/images/titania.jpg" alt="Landing on Titania" className={styles.titaniaImage} />
+      </div>
+      <div className={styles.visTag}>TITANIA · MOON OF URANUS</div>
+    </div>
+  );
+}
+
+function ZeroVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visZero} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      <div className={styles.zeroImageWrap}>
+        <img src="/images/zero-hologram.jpg" alt="Zero Hologram" className={styles.zeroImage} />
+      </div>
+      <div className={styles.visTag}>CLASSIFIED</div>
+    </div>
+  );
+}
+
+function EarthVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visEarth} ${active ? styles.visActive : ''}`}>
+      <div className={styles.starBg} />
+      <div className={styles.earthImageWrap}>
+        <img src="/images/earth-hologram.png" alt="Earth Hologram" className={styles.earthImage} />
+      </div>
+      <div className={styles.visTag}>SOL-3 · EARTH · INDIA</div>
+    </div>
+  );
+}
+
+function ContactVisual({ active }: { active: boolean }) {
+  return (
+    <div className={`${styles.vis} ${styles.visContact} ${active ? styles.visActive : ''}`}>
+      <div className={styles.contactImageWrap}>
+        <img src="/images/first-contact.jpg" alt="First Contact" className={styles.contactImage} />
+      </div>
+      <div className={styles.visTag}>BIT MESRA · HALLOWEEN EVENT</div>
+    </div>
+  );
+}
+
+function TrailerVisual({ active }: { active: boolean }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <div className={`${styles.vis} ${styles.visTrailer} ${active ? styles.visActive : ''}`}>
+      {/* Background grid / ambient */}
+      <div className={styles.trailerBg} />
+      
+      {/* Small floating HUD */}
+      <div className={styles.ambientSignal}>
+        <div className={styles.signalBars}>
+          <span className={styles.signalBar} />
+          <span className={styles.signalBar} />
+          <span className={styles.signalBar} />
+        </div>
+        <div className={styles.signalText}>
+          <div className={styles.signalLabel}>AMBIENT SIGNAL</div>
+          <div className={styles.signalStatus}>ONLINE</div>
+        </div>
+      </div>
+
+      <div className={styles.trailerFrame}>
+        {/* Frame Corners */}
+        <div className={styles.cornerTL} />
+        <div className={styles.cornerTR} />
+        <div className={styles.cornerBL} />
+        <div className={styles.cornerBR} />
+
+        {/* Top Header */}
+        <div className={styles.trailerHeader}>
+          <span className={styles.trailerDot} />
+          ZURAVERSE // ARRIVAL CHRONICLE FEED
+          <span className={styles.trailerDot} />
+        </div>
+
+        {/* Video Area */}
+        <div className={styles.trailerContent} onClick={() => setIsPlaying(true)}>
+          {isPlaying ? (
+            <iframe
+              className={styles.trailerIframe}
+              src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=1&rel=0&modestbranding=1"
+              title="Arrival of Zero – Zuraverse Chronicle"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          ) : (
+            <>
+              <img 
+                src="/We%20are%20coming%20Thumbnail.jpg" 
+                alt="Trailer Cover" 
+                className={styles.trailerPoster} 
+              />
+              <div className={styles.playOverlay}>
+                <div className={styles.playCircle}>
+                  <svg viewBox="0 0 24 24" className={styles.playIconFilled}>
+                    <path d="M8 5v14l11-7z" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Bottom Footer */}
+        {!isPlaying && (
+          <div className={styles.trailerFooter}>
+            CLICK TO PLAY TRANSMISSION
+            <span className={styles.trailerDot} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ChapterVisual({ visual, active, scrollProgress }: { visual: string; active: boolean; scrollProgress: number }) {
+  switch (visual) {
+    case 'voyager':    return <VoyagerVisual    active={active} scrollProgress={scrollProgress} />;
+    case 'discovered': return <DiscoveredVisual active={active} />;
+    case 'fleet':      return <FleetVisual      active={active} />;
+    case 'titania':    return <TitaniaVisual    active={active} />;
+    case 'zero':       return <ZeroVisual       active={active} />;
+    case 'earth':      return <EarthVisual      active={active} />;
+    case 'contact':    return <ContactVisual    active={active} />;
+    case 'trailer':    return <TrailerVisual    active={active} />;
+    default:           return null;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Trailer Modal
+// ─────────────────────────────────────────────────────────────
+
+function TrailerModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  if (!open) return null;
+  return (
+    <div className={styles.modalBackdrop} onClick={onClose}>
+      <div className={styles.modalBox} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalHead}>
+          <span className={styles.modalLabel}>ARRIVAL CHRONICLE // DIMENSIONAL CATALYST</span>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close video">
+            ×
+          </button>
+        </div>
+        <div className={styles.modalFrame}>
+          <iframe
+            className={styles.modalIframe}
+            src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=1&rel=0&modestbranding=1"
+            title="Arrival of Zero – Zuraverse Chronicle"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Mobile Fallback
+// ─────────────────────────────────────────────────────────────
+
+function MobileJourney({ onWatch }: { onWatch: () => void }) {
+  return (
+    <section className={styles.mobileFallback} id="arrival-of-zero">
+      <div className={styles.starBg} />
+      <div className={styles.mobileHd}>
+        <span className={styles.mobileEye}>THE RESONANCE MISSION</span>
+        <h2 className={styles.mobileBigTitle}>
+          ARRIVAL OF <span className={styles.mobileTitleGlow}>ZERO</span>
+        </h2>
+      </div>
+      {CHAPTERS.map(ch => (
+        <div key={ch.id} className={styles.mobileChap}>
+          {ch.id === '08' ? (
+            <div className={styles.mobileTrailerWrap}>
               <iframe
-                className={styles.modalIframe}
-                src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=1&rel=0&modestbranding=1"
+                style={{ width: '100%', height: '300px', border: 'none', borderRadius: '8px' }}
+                src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=0&rel=0&modestbranding=1"
                 title="Arrival of Zero – Zuraverse Chronicle"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
             </div>
-
-          </div>
+          ) : (
+            <>
+              <div className={styles.textMeta}>
+                <span className={styles.chapterId}>CHAPTER {ch.id}</span>
+                <span className={styles.chapterDivider} />
+                <span className={styles.chapterYear}>{ch.year}</span>
+              </div>
+              <h3 className={styles.mobileChTitle}>{ch.title}</h3>
+              <p className={styles.chapterBody}>
+                {ch.body.split('\n').map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
+            </>
+          )}
         </div>
-      )}
+      ))}
     </section>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main Component
+// ─────────────────────────────────────────────────────────────
+
+export default function ZeroArrivalSection() {
+  const [isModalOpen, setIsModalOpen]     = useState(false);
+  const [activeChapter, setActiveChapter] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile]           = useState(false);
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const trackRef   = useRef<HTMLDivElement>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Scroll driver
+  const handleScroll = useCallback(() => {
+    if (!wrapperRef.current || isMobile) return;
+    const rect  = wrapperRef.current.getBoundingClientRect();
+    const range = wrapperRef.current.offsetHeight - window.innerHeight;
+    if (range <= 0) return;
+
+    const p = Math.max(0, Math.min(1, -rect.top / range));
+    setScrollProgress(p);
+    setActiveChapter(Math.round(p * (NUM - 1)));
+
+    if (trackRef.current) {
+      trackRef.current.style.transform =
+        `translateX(${-p * (NUM - 1) * window.innerWidth}px)`;
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  // ── Mobile ───────────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <>
+        <MobileJourney onWatch={() => setIsModalOpen(true)} />
+        <TrailerModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </>
+    );
+  }
+
+  // ── Desktop ──────────────────────────────────────────────
+  return (
+    <>
+      {/* Tall scroll wrapper — 700vh gives 100vh per chapter */}
+      <div ref={wrapperRef} className={styles.sceneWrapper} id="arrival-of-zero">
+
+        {/* Sticky cinematic viewport */}
+        <div className={styles.stickyStage}>
+
+          {/* Starfield */}
+          <div className={styles.starfield} aria-hidden="true" />
+
+          {/* Top gradient divider */}
+          <div className={styles.topDivider} aria-hidden="true" />
+
+          {/* Bottom progress bar */}
+          <div className={styles.progressBar} aria-hidden="true">
+            <div
+              className={styles.progressFill}
+              style={{ width: `${scrollProgress * 100}%` }}
+            />
+          </div>
+
+          {/* Chapter counter — top left */}
+          <div className={styles.chapterCounter} aria-live="polite">
+            <span className={styles.cntCur}>{String(activeChapter + 1).padStart(2, '0')}</span>
+            <span className={styles.cntSlash}>/</span>
+            <span className={styles.cntTotal}>07</span>
+          </div>
+
+          {/* Section label — top right */}
+          <div className={styles.sectionLabel} aria-hidden="true">
+            <span className={styles.sectionLabelTxt}>ARRIVAL OF ZERO</span>
+            <span className={styles.sectionBeacon} />
+          </div>
+
+          {/* Trajectory SVG — bottom strip */}
+          <svg
+            className={styles.trajSvg}
+            viewBox="0 0 1400 60"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <filter id="trajGlow">
+                <feGaussianBlur stdDeviation="2.5" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <linearGradient id="trajGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%"   stopColor="#2dd4bf" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.9" />
+              </linearGradient>
+            </defs>
+            {/* Dim dashed background line */}
+            <line
+              x1="0" y1="30" x2="1400" y2="30"
+              stroke="rgba(45,212,191,0.1)"
+              strokeWidth="1"
+              strokeDasharray="6 6"
+            />
+            {/* Reveal line — driven by scrollProgress */}
+            <line
+              x1="0" y1="30" x2="1400" y2="30"
+              stroke="url(#trajGrad)"
+              strokeWidth="1.5"
+              strokeDasharray="1400"
+              strokeDashoffset={1400 * (1 - scrollProgress)}
+              filter="url(#trajGlow)"
+            />
+            {/* Chapter nodes */}
+            {CHAPTERS.map((_, i) => {
+              const x      = (i / (NUM - 1)) * 1400;
+              const passed = i <= activeChapter;
+              return (
+                <g key={i}>
+                  <circle
+                    cx={x} cy={30}
+                    r={passed ? 5 : 3}
+                    fill={passed ? '#2dd4bf' : 'rgba(45,212,191,0.2)'}
+                    filter={passed ? 'url(#trajGlow)' : undefined}
+                    style={{ transition: 'all 0.5s ease' }}
+                  />
+                  {passed && (
+                    <circle
+                      cx={x} cy={30} r={10}
+                      fill="none"
+                      stroke="rgba(45,212,191,0.18)"
+                      strokeWidth="1"
+                    />
+                  )}
+                </g>
+              );
+            })}
+            {/* Moving ship dot */}
+            <circle
+              cx={scrollProgress * 1400}
+              cy={30}
+              r={5}
+              fill="#ffffff"
+              filter="url(#trajGlow)"
+            />
+          </svg>
+
+          {/* Scroll hint */}
+          <div
+            className={`${styles.scrollHint} ${scrollProgress > 0.03 ? styles.scrollHintGone : ''}`}
+            aria-hidden="true"
+          >
+            <span className={styles.scrollHintTxt}>SCROLL TO TRAVEL</span>
+            <div className={styles.scrollHintLine} />
+          </div>
+
+          {/* ── Horizontal chapter track ─────────────────── */}
+          <div ref={trackRef} className={styles.hTrack}>
+            {CHAPTERS.map((ch, idx) => {
+              const isActive = activeChapter === idx;
+              return (
+                <div
+                  key={ch.id}
+                  className={`${styles.chPanel} ${isActive ? styles.chPanelActive : ''}`}
+                  style={{
+                    position: 'relative',
+                    zIndex: ch.id === '01' ? 100 : 1,
+                    gridTemplateColumns: ch.id === '08' ? '100% 0%' : undefined,
+                  }}
+                >
+                  {/* Visual left half */}
+                  <div 
+                    className={styles.panelVis}
+                    style={{ 
+                      overflow: ch.id === '01' ? 'visible' : 'hidden',
+                      zIndex: ch.id === '01' ? 10 : 1
+                    }}
+                  >
+                    <ChapterVisual visual={ch.visual} active={isActive} scrollProgress={scrollProgress} />
+                  </div>
+
+                  {/* Text right half */}
+                  {ch.id !== '08' && (
+                    <div className={`${styles.panelTxt} ${isActive ? styles.panelTxtActive : ''}`}>
+                      <div className={styles.textMeta}>
+                        <span className={styles.chapterId}>CHAPTER {ch.id}</span>
+                        <span className={styles.chapterDivider} />
+                        <span className={styles.chapterYear}>{ch.year}</span>
+                      </div>
+                      <h2 className={styles.chapterTitle}>{ch.title}</h2>
+                      <p className={styles.chapterBody}>
+                        {ch.body.split('\n').map((line, i) => (
+                          <React.Fragment key={i}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        ))}
+                      </p>
+
+                      {ch.isFinal && (
+                        <button
+                          id="watch-arrival-cta"
+                          className={styles.watchCta}
+                          onClick={() => setIsModalOpen(true)}
+                        >
+                          <span className={styles.watchCtaPulse} aria-hidden="true" />
+                          <svg
+                            viewBox="0 0 24 24"
+                            className={styles.watchCtaIcon}
+                            aria-hidden="true"
+                          >
+                            <path d="M8 5v14l11-7z" fill="currentColor" />
+                          </svg>
+                          <span className={styles.watchCtaLabel}>WATCH ARRIVAL OF ZERO</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </div>
+
+      <TrailerModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }

@@ -128,32 +128,57 @@ export default function HeroSection({ entered = true }: { entered?: boolean }) {
       ease: 'back.out(1.4)' // gorgeous deceleration spring drop!
     }, 0.95);
 
-    // 3. BRAND IDENTITY & HUD DATA (2.8s - 3.0s) — Title, Subtitle, and buttons fade in at last!
+    // 3. BRAND IDENTITY & HUD DATA — Title, Subtitle, and buttons fade in sequentially!
     tl.fromTo(`.${styles.headerCopy}`,
       { opacity: 0, y: 35 },
       { opacity: 1, y: 0, duration: 1.6, ease: 'power3.out' },
       2.8
     );
 
-    tl.fromTo(`.${styles.ctaGroup}`,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1.4, ease: 'power3.out' },
-      3.0
-    );
+    // Trigger title & subtitle scramble animations as they start fading in (2.8s)
+    tl.call(() => {
+      const container = containerRef.current;
+      if (!container) return;
+      
+      const titleEl = container.querySelector(`.${styles.heroTitle}`);
+      if (titleEl) scramble(titleEl as HTMLElement, 'Zuraverse', 1000);
+      
+      const subtitleEl = container.querySelector(`.${styles.heroSubtitle}`);
+      if (subtitleEl) scramble(subtitleEl as HTMLElement, 'A Transmedia Universe of Hippie Aliens', 1200);
+    }, [], 2.8);
 
-    // 4. PERIPHERAL CONTROLS (3.2s) — Nav and Signal Tracker fade in to lock layout
+    // 4. PERIPHERAL CONTROLS — Nav and Signal Tracker fade in to lock layout
     tl.fromTo(`.${styles.nav}, .${styles.ambientHud}, .${styles.scrollIndicator}`,
       { opacity: 0, y: 15 },
       { opacity: 1, y: 0, duration: 1.4, ease: 'power3.out', stagger: 0.1 },
-      3.2
+      3.4
     );
 
-    // 5. UNLOCK MOUSE PARALLAX (3.8s) — Eases in mouse parallax only after Zuraverse text finishes boots!
+    // 5. CTA BUTTONS — Arrive only after or when Zuraverse title has appeared/scrambled (4.2s)
+    tl.fromTo(`.${styles.ctaGroup}`,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 1.4, ease: 'power3.out' },
+      4.2
+    );
+
+    // Trigger CTA buttons text scramble as they start fading in (4.2s)
+    tl.call(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const btnPrimaryEl = container.querySelector(`.${styles.btnPrimary}`);
+      if (btnPrimaryEl) scramble(btnPrimaryEl as HTMLElement, '[ Watch Episode 1 ]', 800);
+
+      const btnSecondaryEl = container.querySelector(`.${styles.btnSecondary}`);
+      if (btnSecondaryEl) scramble(btnSecondaryEl as HTMLElement, 'Explore Lore', 800);
+    }, [], 4.2);
+
+    // 6. UNLOCK MOUSE PARALLAX — Eases in mouse parallax only after the full boot sequence completes (4.8s)
     tl.to(entrance, {
       parallaxStrength: 1.0,
       duration: 1.6,
       ease: 'power2.out'
-    }, 3.8);
+    }, 4.8);
 
     return () => {
       clearTimeout(timer);

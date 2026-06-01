@@ -12,7 +12,40 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid rgba(94, 234, 212, 0.1);
+}
+
+.sectionDivider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.08) 20%,
+    rgba(56, 189, 248, 0.3) 50%,
+    rgba(56, 189, 248, 0.08) 80%,
+    transparent 100%
+  );
+  z-index: 10;
+}
+
+.sectionDividerBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.08) 20%,
+    rgba(56, 189, 248, 0.3) 50%,
+    rgba(56, 189, 248, 0.08) 80%,
+    transparent 100%
+  );
+  z-index: 10;
 }
 
 /* Starry Grid Overlay */
@@ -107,12 +140,21 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
   font-weight: 900;
-  letter-spacing: 0.22em;
+  letter-spacing: 2px;
+  line-height: 1.1;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
   text-align: center;
+}
+
+.titleGlow {
+  background: linear-gradient(135deg, #a78bfa 30%, #38bdf8 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.4));
 }
 
 .subtitleBlock {

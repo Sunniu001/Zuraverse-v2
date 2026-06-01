@@ -242,8 +242,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 0.5rem;
-  opacity: 0;
-  animation: fadeSlideUp 1s ease 0.9s forwards;
   filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.6));
 }
 
@@ -257,8 +255,6 @@
   color: #e2e8f0;                          /* bright off-white for excellent visibility */
   text-shadow: 0 0 10px rgba(94, 234, 212, 0.4), 0 0 2px rgba(255, 255, 255, 0.8); /* soft elegant text glow */
   margin-bottom: 0;
-  opacity: 0;
-  animation: fadeSlideUp 1s ease 1.1s forwards;
 }
 
 .heroDescription {
@@ -280,8 +276,6 @@
   gap: 1.25rem;
   flex-wrap: wrap;
   justify-content: center;
-  opacity: 0;
-  animation: fadeSlideUp 1s ease 1.5s forwards;
 }
 
 .btnPrimary {
@@ -353,8 +347,6 @@
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  opacity: 0;
-  animation: fadeIn 1s ease 2s forwards;
 }
 
 .scrollLabel {
