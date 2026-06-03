@@ -302,6 +302,75 @@ export default function HeroSection({ entered = true }: { entered?: boolean }) {
     };
   }, [initYTPlayers]);
 
+  // Expose ambient audio fade controls on the window object
+  useEffect(() => {
+    (window as any).fadeAmbientOut = () => {
+      // 1. YouTube Ambient Player
+      const player = ambientPlayerRef.current;
+      if (player && typeof player.getVolume === 'function') {
+        let vol = player.getVolume();
+        const interval = setInterval(() => {
+          vol = Math.max(0, vol - 5);
+          player.setVolume(vol);
+          if (vol <= 0) {
+            clearInterval(interval);
+            try { player.pauseVideo(); } catch (e) {}
+          }
+        }, 50);
+      }
+
+      // 2. Fallback HTML5 Audio
+      const audio = audioRef.current;
+      if (audio && !audio.paused) {
+        let vol = audio.volume;
+        const interval = setInterval(() => {
+          vol = Math.max(0, vol - 0.05);
+          audio.volume = vol;
+          if (vol <= 0) {
+            clearInterval(interval);
+            audio.pause();
+          }
+        }, 50);
+      }
+    };
+
+    (window as any).fadeAmbientIn = () => {
+      // 1. YouTube Ambient Player
+      const player = ambientPlayerRef.current;
+      if (player && typeof player.getVolume === 'function') {
+        try { player.playVideo(); } catch (e) {}
+        let vol = player.getVolume();
+        const interval = setInterval(() => {
+          vol = Math.min(50, vol + 5);
+          player.setVolume(vol);
+          if (vol >= 50) {
+            clearInterval(interval);
+          }
+        }, 50);
+      }
+
+      // 2. Fallback HTML5 Audio
+      const audio = audioRef.current;
+      if (audio) {
+        audio.volume = 0;
+        audio.play().catch(() => {});
+        let vol = 0;
+        const interval = setInterval(() => {
+          vol = Math.min(1, vol + 0.05);
+          audio.volume = vol;
+          if (vol >= 1) {
+            clearInterval(interval);
+          }
+        }, 50);
+      }
+    };
+
+    return () => {
+      delete (window as any).fadeAmbientOut;
+      delete (window as any).fadeAmbientIn;
+    };
+  }, []);
+
   const togglePlayback = () => {
     const player = ytPlayerRef.current;
     if (player && typeof player.getPlayerState === 'function') {

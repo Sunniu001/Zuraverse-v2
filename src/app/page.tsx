@@ -6,6 +6,8 @@ import HeroSection from '@/components/HeroSection/HeroSection';
 import HippieAliensSection from '@/components/HippieAliensSection/HippieAliensSection';
 import EraTimelineSection from '@/components/EraTimelineSection/EraTimelineSection';
 import ZeroArrivalSection from '@/components/ZeroArrivalSection/ZeroArrivalSection';
+import HangarSection from '@/components/HangarSection/HangarSection';
+import NirvanaParallaxSection from '@/components/NirvanaParallaxSection/NirvanaParallaxSection';
 import ArchivesSection from '@/components/ArchivesSection/ArchivesSection';
 
 export default function Home() {
@@ -18,6 +20,8 @@ export default function Home() {
       <HippieAliensSection />
       <EraTimelineSection />
       <ZeroArrivalSection />
+      <HangarSection />
+      <NirvanaParallaxSection />
       <ArchivesSection />
     </main>
   );

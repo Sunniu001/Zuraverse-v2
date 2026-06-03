@@ -1,0 +1,965 @@
+/* ────────────────────────────────────────────────────────────
+   HangarSection — Multi-Section Vertical Narrative
+   ──────────────────────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  width: 100%;
+  background: #030206;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Starfield & Grid Overlays */
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(167, 139, 250, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 50% 10%, rgba(10,25,60,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(35,10,60,0.35) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECTION 1: HERO INTRO
+   ──────────────────────────────────────────────────────────── */
+
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 650px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 20vh;
+  justify-content: flex-start;
+  overflow: hidden;
+  background: #030206;
+}
+
+.cathedralBgWrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80vw;
+  height: 80vh;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+  transition: opacity 0.4s ease;
+}
+
+.cathedralBg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right top;
+}
+
+.heroLotus {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5));
+  animation: lotusGlow 3s infinite alternate ease-in-out;
+  pointer-events: none;
+}
+
+.heroLotusIcon {
+  width: 90px;
+  height: 90px;
+  color: rgba(167, 139, 250, 0.7);
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(3, 2, 6, 0.95) 0%, rgba(3, 2, 6, 0.8) 25%, rgba(3, 2, 6, 0.25) 50%, transparent 80%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .cathedralBgWrap {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    transform: none;
+    opacity: 0.6;
+  }
+  .cathedralBg {
+    object-fit: cover;
+    object-position: center;
+  }
+  .heroOverlay {
+    background: linear-gradient(90deg, rgba(3, 2, 6, 0.95) 0%, rgba(3, 2, 6, 0.85) 50%, rgba(3, 2, 6, 0.4) 100%);
+  }
+}
+
+.heroContainer {
+  width: 100%;
+  padding: 0 10%;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+  will-change: transform;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 380px;
+  text-align: left;
+}
+
+.heroEyebrow {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem; /* smaller font size */
+  letter-spacing: 5px;
+  color: var(--ship-accent, #a78bfa);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--ship-accent-rgba, rgba(167, 139, 250, 0.4));
+  margin-bottom: 10px;
+  display: block;
+  transition: color 0.8s, text-shadow 0.8s;
+}
+
+.heroTitle {
+  font-family: 'Orbitron', var(--font-display), monospace;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 12px;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  line-height: 0.95;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.heroSubtitle {
+  font-family: var(--font-display), monospace;
+  font-size: clamp(0.7rem, 1.2vw, 0.95rem);
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 55px;
+  text-transform: uppercase;
+}
+
+.heroDesc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 38px;
+  font-weight: 400;
+}
+
+/* Scroll Indicator — pinned to bottom-left of hero */
+.scrollIndicator {
+  position: absolute;
+  bottom: 120px;
+  left: 10%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 15;
+}
+
+.scrollIconWrap {
+  width: 24px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ship-accent, #a78bfa);
+  transition: color 0.8s;
+}
+
+.scrollIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.animatedDot {
+  animation: scrollDotSlide 2.5s infinite cubic-bezier(0.15, 0.85, 0.35, 1);
+  transform-origin: 12px 18px;
+}
+
+@keyframes scrollDotSlide {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(44px);
+    opacity: 0;
+  }
+}
+
+.scrollText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scrollLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.52rem;
+  letter-spacing: 2.5px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+}
+
+.scrollTarget {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECTION 2: SHOWCASE
+   ──────────────────────────────────────────────────────────── */
+
+.showcaseSection {
+  height: 100vh;
+  min-height: 750px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #030206;
+}
+
+.showcaseSection .container {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Central Showcase Workspace */
+.workspace {
+  background: rgba(10, 8, 16, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.workspaceTop {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+/* Container Layout */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  padding: 40px 5% 30px 5%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+/* Specs Sidebar */
+.sidebar {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 40px;
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: none;
+  backdrop-filter: none;
+  position: relative;
+  overflow: visible;
+  z-index: 20;
+}
+
+.shipHeader {
+  margin-bottom: 24px;
+}
+
+.shipId {
+  font-family: var(--font-display), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  color: var(--ship-accent, #a78bfa);
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3));
+  margin-bottom: 8px;
+  display: block;
+}
+
+.shipName {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1.1;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+}
+
+.shipNameFirst {
+  color: #ffffff;
+}
+
+.shipNameGradient {
+  background: linear-gradient(90deg, #b388ff 0%, #4fc3f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.shipDescription {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  max-width: 100%;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.statsList {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.statBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--ship-accent, #a78bfa);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.statValue {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+.pilotGlow {
+  color: var(--ship-accent, #a78bfa);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3));
+}
+
+.archiveBtn {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-family: var(--font-display), monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.archiveBtn:hover {
+  border-color: var(--ship-accent, #a78bfa);
+  color: var(--ship-accent, #a78bfa);
+  background: var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.08));
+  box-shadow: 0 0 15px var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.15));
+}
+
+.btnArrow {
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+/* Center viewport */
+.viewport {
+  position: relative;
+  background: transparent;
+  border: none;
+  overflow: hidden;
+  display: block;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 150px);
+  mask-image: linear-gradient(to right, transparent 0%, black 150px);
+}
+
+.shipDisplayBox {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.shipRingBase {
+  position: absolute;
+  bottom: 12%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 2px solid var(--ship-accent, #a78bfa);
+  background: radial-gradient(circle, var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.05)) 20%, transparent 70%);
+  box-shadow: 
+    0 0 35px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3)),
+    inset 0 0 35px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3));
+  transform: rotateX(75deg);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 5;
+  animation: ringSpin 20s linear infinite;
+  transition: border-color 0.8s, box-shadow 0.8s;
+}
+
+.shipRingOuter {
+  position: absolute;
+  bottom: 9%;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  border: 1px dashed var(--ship-accent-rgba, rgba(167, 139, 250, 0.4));
+  transform: rotateX(75deg);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 4;
+  animation: ringSpin 35s linear reverse infinite;
+  transition: border-color 0.8s;
+}
+
+.shipImageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatShip 8s ease-in-out infinite;
+  will-change: transform, filter;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), filter 0.8s;
+}
+
+.shipImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.85));
+}
+
+/* Hot-Nodes Blueprint Pointers */
+.nodeDot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ship-accent, #a78bfa);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 8px var(--ship-accent, #a78bfa);
+  z-index: 18;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.8s, box-shadow 0.8s;
+}
+
+.nodeDot::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid var(--ship-accent-rgba, rgba(167, 139, 250, 0.6));
+  animation: pulseNode 1.8s ease-out infinite;
+}
+
+.nodeLine {
+  position: absolute;
+  stroke: var(--ship-accent, #a78bfa);
+  stroke-width: 1px;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: stroke 0.8s, opacity 0.8s;
+}
+
+.nodeCard {
+  position: absolute;
+  width: 220px;
+  background: rgba(10, 8, 16, 0.75);
+  border: 1px solid var(--ship-accent-rgba, rgba(167, 139, 250, 0.25));
+  border-radius: 6px;
+  padding: 12px 14px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.55),
+    inset 0 0 15px var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.05));
+  pointer-events: auto;
+  z-index: 25;
+  opacity: 0;
+  visibility: hidden;
+  transition: border-color 0.8s, box-shadow 0.8s, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.nodeDot:hover + .nodeCard,
+.nodeCard:hover {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nodeCardTitle {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.nodeCardDesc {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+/* Catalog Cards Slider */
+.catalogWrapper {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* space between arrows and catalog list */
+  width: 100%;
+  padding: 0 40px 40px;
+  box-sizing: border-box;
+}
+
+.navArrow {
+  background: rgba(10, 8, 16, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.navArrow:hover {
+  background: var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.08));
+  border-color: var(--ship-accent, #a78bfa);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.15));
+}
+
+.navArrow svg {
+  transition: transform 0.2s ease;
+}
+
+.navArrow:hover svg {
+  transform: scale(1.1);
+}
+
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .catalog {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .catalogCard:last-child {
+    grid-column: span 2;
+  }
+  .navArrow {
+    display: none;
+  }
+}
+
+.catalogCard {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.catalogCard:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.catalogCardActive {
+  background: rgba(8, 6, 12, 0.85);
+  border-color: var(--ship-accent, #a78bfa);
+  box-shadow: 
+    0 0 15px var(--ship-accent-rgba, rgba(167, 139, 250, 0.25)),
+    inset 0 0 10px var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.05));
+}
+
+.catalogImgWrap {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  border-radius: 4px;
+}
+
+.catalogCardActive .catalogImgWrap {
+  background: radial-gradient(circle, var(--ship-accent-rgba-low, rgba(167, 139, 250, 0.12)) 0%, transparent 75%);
+}
+
+.catalogCard:hover .catalogImgWrap {
+  transform: scale(1.05) translateY(-2px);
+}
+
+.catalogImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4));
+  mix-blend-mode: screen;
+}
+
+.catalogMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.catalogId {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.catalogCardActive .catalogId {
+  color: var(--ship-accent, #a78bfa);
+}
+
+.catalogName {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.catalogCardActive .catalogName {
+  color: #ffffff;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECTION 3: FLEET SUMMARY FOOTER
+   ──────────────────────────────────────────────────────────── */
+
+.footerSection {
+  min-height: 100vh;
+  background: #030206;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 5% 100px 5%;
+  box-sizing: border-box;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.lotusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 15px var(--ship-accent-rgba, rgba(167, 139, 250, 0.4)));
+  animation: lotusGlow 3s infinite alternate ease-in-out;
+}
+
+.lotusIcon {
+  width: 60px;
+  height: 60px;
+  color: var(--ship-accent, #a78bfa);
+  transition: color 0.8s;
+}
+
+@keyframes lotusGlow {
+  0% { filter: drop-shadow(0 0 8px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3))); }
+  100% { filter: drop-shadow(0 0 20px var(--ship-accent, #a78bfa)); }
+}
+
+.lineupImageWrap {
+  width: 100%;
+  max-width: 1050px;
+  opacity: 0.85;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin-bottom: 50px;
+}
+
+.lineupImageWrap:hover {
+  opacity: 1;
+  transform: scale(1.01);
+}
+
+.lineupImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.85));
+}
+
+.fleetSummaryContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.fleetMetaLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.fleetBigTitle {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  letter-spacing: 4px;
+  color: #ffffff;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.nextDestination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nextLabel {
+  font-family: var(--font-display), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: var(--ship-accent, #a78bfa);
+  text-shadow: 0 0 10px var(--ship-accent-rgba, rgba(167, 139, 250, 0.3));
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.8s, text-shadow 0.8s;
+}
+
+.nextCity {
+  font-family: var(--font-display), 'Orbitron', monospace;
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 12px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+  animation: glowPulse 2.8s infinite alternate;
+}
+
+.destinationPulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ship-accent, #a78bfa);
+  box-shadow: 0 0 10px var(--ship-accent, #a78bfa);
+  animation: pulseDot 2s infinite alternate ease-in-out;
+  margin-top: 10px;
+  transition: background-color 0.8s, box-shadow 0.8s;
+}
+
+@keyframes shipEnter {
+  0% { 
+    opacity: 0; 
+    transform: translateX(100px) scale(0.95);
+    filter: blur(8px) brightness(1.5) contrast(1.2);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0) scale(1);
+    filter: blur(0) brightness(1) contrast(1);
+  }
+}
+
+@keyframes sidebarEnter {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-80px);
+    letter-spacing: 2px;
+    filter: blur(5px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0);
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+}
+
+@keyframes nodesEnter {
+  0% {
+    opacity: 0;
+    filter: brightness(2) blur(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+  }
+}
+
+.animateShipEnter {
+  animation: shipEnter 0.7s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.animateSidebarEnter {
+  animation: sidebarEnter 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.animateNodesEnter {
+  animation: nodesEnter 1s ease-out forwards 0.8s;
+  opacity: 0; /* hidden until delay finishes */
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 1; }
+}
+
+/* Keyframe Animations */
+@keyframes floatShip {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-4px) scale(1.008); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes pulseNode {
+  0% { transform: scale(0.9); opacity: 0.95; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes ringSpin {
+  from { transform: rotateX(75deg) rotate(0deg); }
+  to { transform: rotateX(75deg) rotate(360deg); }
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 15px rgba(255,255,255,0.1);
+  }
+  100% {
+    text-shadow: 0 0 35px var(--ship-accent-rgba, rgba(167, 139, 250, 0.5));
+  }
+}

@@ -1,0 +1,254 @@
+.section {
+  position: relative;
+  width: 100%;
+  padding: 70px 5%;
+  overflow: hidden;
+}
+
+.sectionDark {
+  background: rgba(4, 8, 14, 0.98);
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.015) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionHeaderLeft {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.sectionEyebrowLeft {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: rgba(56, 189, 248, 0.45);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.sectionTitleLeft {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.titleGradient {
+  background: linear-gradient(135deg, #a78bfa 30%, #38bdf8 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.3));
+}
+
+.heroNarrative {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.heroSectionDesc {
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: #cbd5e1;
+  font-weight: 300;
+}
+
+.highlightCyan {
+  color: #38bdf8;
+  font-weight: 500;
+}
+
+.nirvanaKeyword {
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.heroNarrativeAccentInline {
+  font-style: italic;
+  color: #e2e8f0;
+  font-weight: 400;
+}
+
+.nirvanaOuterContainer {
+  width: 100%;
+  padding: 0;
+}
+
+.nirvanaCanvasContainer {
+  width: 100%;
+  position: relative;
+  height: 700vh; /* 2 locked scrolls + 4 zoom scrolls, then natural scroll to next section */
+}
+
+.nirvanaStickyViewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.parallaxCanvas {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  
+  opacity: calc(1 - var(--blur-progress, 0));
+  will-change: opacity;
+}
+
+.pLayerWrap {
+  position: absolute;
+  top: -4%;
+  left: -2%;
+  width: 104%;
+  height: 108%;
+  transition: transform 0.1s ease-out;
+  pointer-events: none;
+}
+
+.pLayerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.pWrapSpace {
+  transform: translate(calc(var(--mx, 0) * -1px), calc(var(--my, 0) * -1px)) scale(calc(1 + var(--zoom-progress, 0) * 0.1));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapSpace .pLayerImg {
+  filter: blur(var(--blur-space, 0px));
+  will-change: filter;
+}
+
+.pWrapBG {
+  transform: translate(calc(var(--mx, 0) * -5px), calc(var(--my, 0) * -5px)) scale(calc(1 + var(--zoom-progress, 0) * 4));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapBG .pLayerImg {
+  filter: blur(var(--blur-bg, 0px));
+  will-change: filter;
+}
+
+.pWrapL5 {
+  transform: translate(calc(var(--mx, 0) * -8px), calc(var(--my, 0) * -8px)) scale(calc(1 + var(--zoom-progress, 0) * 6));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapL5 .pLayerImg {
+  filter: blur(var(--blur-l5, 0px));
+  will-change: filter;
+}
+
+.pWrapL4 {
+  transform: translate(calc(var(--mx, 0) * -9px), calc(var(--my, 0) * -9px)) scale(calc(1 + var(--zoom-progress, 0) * 7));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapL4 .pLayerImg {
+  filter: blur(var(--blur-l4, 0px));
+  will-change: filter;
+}
+
+.pWrapL3 {
+  transform: translate(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -10px)) scale(calc(1 + var(--zoom-progress, 0) * 8));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapL3 .pLayerImg {
+  filter: blur(var(--blur-l3, 0px));
+  will-change: filter;
+}
+
+.pWrapL2 {
+  transform: translate(calc(var(--mx, 0) * -11px), calc(var(--my, 0) * -11px)) scale(calc(1 + var(--zoom-progress, 0) * 9));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapL2 .pLayerImg {
+  filter: blur(var(--blur-l2, 0px));
+  will-change: filter;
+}
+
+.pWrapL1 {
+  transform: translate(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -12px)) scale(calc(1 + var(--zoom-progress, 0) * 10));
+  will-change: transform;
+  transform-origin: center 30%;
+}
+.pWrapL1 .pLayerImg {
+  filter: blur(var(--blur-l1, 0px));
+  will-change: filter;
+}
+
+@keyframes floatMain {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes floatSlow {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes floatMedRev {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(5px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes floatFast {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.pFloatMain {
+  animation: floatMain 8s ease-in-out infinite;
+}
+.pFloatSlow {
+  animation: floatSlow 12s ease-in-out infinite;
+}
+.pFloatMedRev {
+  animation: floatMedRev 9s ease-in-out infinite;
+}
+.pFloatFast {
+  animation: floatFast 6s ease-in-out infinite;
+}
+
+.parallaxGlowOverlay {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+  pointer-events: none;
+}

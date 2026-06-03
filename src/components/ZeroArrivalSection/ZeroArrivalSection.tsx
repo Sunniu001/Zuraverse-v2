@@ -36,14 +36,6 @@ const CHAPTERS: Chapter[] = [
   },
   {
     id: '03',
-    title: 'THE RESONANCE FLEET',
-    year: 'THE RESPONSE',
-    body: 'Ten thousand vessels emerged from hyperspace. What began as a discovery became a civilizational event spanning thousands of light years.',
-    mood: 'Epic · Civilizational',
-    visual: 'fleet',
-  },
-  {
-    id: '04',
     title: 'TITANIA',
     year: 'FIRST APPROACH',
     body: 'The fleet established a temporary outpost on Titania — a moon of Uranus. The first reconnaissance team was assembled. Departure was imminent.',
@@ -51,7 +43,7 @@ const CHAPTERS: Chapter[] = [
     visual: 'titania',
   },
   {
-    id: '05',
+    id: '04',
     title: 'ZERO',
     year: 'SCOUT DESIGNATION',
     body: "Selected for Earth's first covert observation mission. His identity: classified. His mission: everything.",
@@ -59,7 +51,7 @@ const CHAPTERS: Chapter[] = [
     visual: 'zero',
   },
   {
-    id: '06',
+    id: '05',
     title: 'EARTH',
     year: 'DESTINATION LOCKED',
     body: 'Destination: Earth\nLocation: India\nMission: Observe humanity.\nWithout detection.',
@@ -67,7 +59,7 @@ const CHAPTERS: Chapter[] = [
     visual: 'earth',
   },
   {
-    id: '07',
+    id: '06',
     title: 'FIRST CONTACT',
     year: 'THE EVENT',
     body: 'What happened next became one of the most important events in Zuraverse history.',
@@ -75,8 +67,8 @@ const CHAPTERS: Chapter[] = [
     visual: 'contact',
   },
   {
-    id: '08',
-    title: 'THE ARRIVAL OF ZERO',
+    id: '07',
+    title: 'Hippie Aliens Episode 1 : The arrival of Zero',
     year: 'CINEMATIC TRAILER',
     body: 'Witness the event that changed the trajectory of the Zuraverse forever.',
     mood: 'Epic',
@@ -242,22 +234,7 @@ function DiscoveredVisual({ active }: { active: boolean }) {
   );
 }
 
-function FleetVisual({ active }: { active: boolean }) {
-  return (
-    <div className={`${styles.vis} ${styles.visFleet} ${active ? styles.visActive : ''}`}>
-      <div className={styles.starBg} />
-      <div className={`${styles.fleetImageWrap} ${active ? styles.fleetImageIn : ''}`}>
-        <img
-          src="/images/fleet.jpg"
-          alt="The Resonance Fleet"
-          className={styles.fleetImage}
-        />
-        <div className={styles.fleetGlow} />
-      </div>
-      <div className={styles.visTag}>RESONANCE FLEET · 10,000 VESSELS</div>
-    </div>
-  );
-}
+
 
 function TitaniaVisual({ active }: { active: boolean }) {
   return (
@@ -306,57 +283,36 @@ function ContactVisual({ active }: { active: boolean }) {
   );
 }
 
-function TrailerVisual({ active }: { active: boolean }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+function TrailerVisual({ active, onWatch }: { active: boolean; onWatch: () => void }) {
+  const awards = [
+    { logo: '/images/award-meratv.png',          title: 'Official Winner',    org: 'MeraTV Film Festival' },
+    { logo: '/images/award-beyond-reality.png', title: 'Official Selection', org: 'Beyond Reality AI Film Festival 2026' },
+    { logo: '/images/award-fictional-scifi.png', title: 'Official Selection', org: 'Fictional Sci-Fi Award 2026' },
+  ];
 
   return (
     <div className={`${styles.vis} ${styles.visTrailer} ${active ? styles.visActive : ''}`}>
-      {/* Background grid / ambient */}
       <div className={styles.trailerBg} />
-      
-      {/* Small floating HUD */}
-      <div className={styles.ambientSignal}>
-        <div className={styles.signalBars}>
-          <span className={styles.signalBar} />
-          <span className={styles.signalBar} />
-          <span className={styles.signalBar} />
-        </div>
-        <div className={styles.signalText}>
-          <div className={styles.signalLabel}>AMBIENT SIGNAL</div>
-          <div className={styles.signalStatus}>ONLINE</div>
-        </div>
-      </div>
 
-      <div className={styles.trailerFrame}>
-        {/* Frame Corners */}
-        <div className={styles.cornerTL} />
-        <div className={styles.cornerTR} />
-        <div className={styles.cornerBL} />
-        <div className={styles.cornerBR} />
+      <div className={styles.trailerInner}>
 
-        {/* Top Header */}
-        <div className={styles.trailerHeader}>
-          <span className={styles.trailerDot} />
-          ZURAVERSE // ARRIVAL CHRONICLE FEED
-          <span className={styles.trailerDot} />
-        </div>
-
-        {/* Video Area */}
-        <div className={styles.trailerContent} onClick={() => setIsPlaying(true)}>
-          {isPlaying ? (
-            <iframe
-              className={styles.trailerIframe}
-              src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=1&rel=0&modestbranding=1"
-              title="Arrival of Zero – Zuraverse Chronicle"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
-          ) : (
-            <>
-              <img 
-                src="/We%20are%20coming%20Thumbnail.jpg" 
-                alt="Trailer Cover" 
-                className={styles.trailerPoster} 
+        {/* ── Left: Video Frame ────────────────────────────── */}
+        <div className={styles.trailerLeft}>
+          <div className={styles.trailerFrame}>
+            <div className={styles.cornerTL} />
+            <div className={styles.cornerTR} />
+            <div className={styles.cornerBL} />
+            <div className={styles.cornerBR} />
+            <div className={styles.trailerHeader}>
+              <span className={styles.trailerDot} />
+              EPISODE 01 // OFFICIAL TRAILER
+              <span className={styles.trailerDot} />
+            </div>
+            <div className={styles.trailerContent} onClick={onWatch}>
+              <img
+                src="https://img.youtube.com/vi/v3Yc5UcHZmk/maxresdefault.jpg"
+                alt="Trailer Cover"
+                className={styles.trailerPoster}
               />
               <div className={styles.playOverlay}>
                 <div className={styles.playCircle}>
@@ -365,32 +321,78 @@ function TrailerVisual({ active }: { active: boolean }) {
                   </svg>
                 </div>
               </div>
-            </>
-          )}
+            </div>
+            <div className={styles.trailerFooter}>
+              CLICK TO WATCH TRAILER
+              <span className={styles.trailerDot} />
+            </div>
+          </div>
         </div>
 
-        {/* Bottom Footer */}
-        {!isPlaying && (
-          <div className={styles.trailerFooter}>
-            CLICK TO PLAY TRANSMISSION
-            <span className={styles.trailerDot} />
+        {/* ── Right: Info Panel ────────────────────────────── */}
+        <div className={styles.trailerRight}>
+          <div className={styles.infoEyebrow}>NOW STREAMING</div>
+          <h2 className={styles.infoTitle}>
+            Hippie Aliens <span className={styles.infoTitleGlow}>Episode 1 : The Arrival of Zero</span>
+          </h2>
+          <p className={styles.infoSub}>
+            Witness the event that changed the trajectory of the Zuraverse forever. Now streaming on MeraTV.
+          </p>
+
+          {/* Stream CTA */}
+          <div className={styles.infoCtas}>
+            <a
+              href="https://meratv.in/share/video/1/18/205"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.ctaStream}
+            >
+              STREAM EPISODE 1
+            </a>
           </div>
-        )}
+
+          {/* Awards & Accolades */}
+          <div className={styles.awardsSection}>
+            <div className={styles.awardsDivider}>
+              <span className={styles.awardsDivLine} />
+              <span className={styles.awardsDivText}>AWARDS &amp; ACCOLADES</span>
+              <span className={styles.awardsDivLine} />
+            </div>
+            <div className={styles.awardsGrid}>
+              {awards.map((a, i) => (
+                <div key={i} className={styles.awardCard}>
+                  <img
+                    src={a.logo}
+                    alt={a.org}
+                    className={styles.awardLogo}
+                    style={
+                      (a as any).darkLogo
+                        ? { filter: 'brightness(0) invert(1)', opacity: 0.85 }
+                        : { opacity: 0.85 }
+                    }
+                  />
+                  <span className={styles.awardTitle}>{a.title}</span>
+                  <span className={styles.awardOrg}>{a.org}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
 }
 
-function ChapterVisual({ visual, active, scrollProgress }: { visual: string; active: boolean; scrollProgress: number }) {
+function ChapterVisual({ visual, active, scrollProgress, onWatch }: { visual: string; active: boolean; scrollProgress: number; onWatch: () => void }) {
   switch (visual) {
     case 'voyager':    return <VoyagerVisual    active={active} scrollProgress={scrollProgress} />;
     case 'discovered': return <DiscoveredVisual active={active} />;
-    case 'fleet':      return <FleetVisual      active={active} />;
     case 'titania':    return <TitaniaVisual    active={active} />;
     case 'zero':       return <ZeroVisual       active={active} />;
     case 'earth':      return <EarthVisual      active={active} />;
     case 'contact':    return <ContactVisual    active={active} />;
-    case 'trailer':    return <TrailerVisual    active={active} />;
+    case 'trailer':    return <TrailerVisual    active={active} onWatch={onWatch} />;
     default:           return null;
   }
 }
@@ -440,15 +442,18 @@ function MobileJourney({ onWatch }: { onWatch: () => void }) {
       </div>
       {CHAPTERS.map(ch => (
         <div key={ch.id} className={styles.mobileChap}>
-          {ch.id === '08' ? (
-            <div className={styles.mobileTrailerWrap}>
-              <iframe
-                style={{ width: '100%', height: '300px', border: 'none', borderRadius: '8px' }}
-                src="https://www.youtube.com/embed/v3Yc5UcHZmk?autoplay=0&rel=0&modestbranding=1"
-                title="Arrival of Zero – Zuraverse Chronicle"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
+          {ch.isFinal ? (
+            <div className={styles.mobileTrailerWrap} onClick={onWatch} style={{ cursor: 'pointer', position: 'relative' }}>
+              <img
+                src="https://img.youtube.com/vi/v3Yc5UcHZmk/maxresdefault.jpg"
+                alt="Trailer Cover"
+                style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: '8px', display: 'block' }}
               />
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.35)', borderRadius: '8px' }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(45,212,191,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="#0a0a0f" /></svg>
+                </div>
+              </div>
             </div>
           ) : (
             <>
@@ -483,6 +488,21 @@ export default function ZeroArrivalSection() {
   const [activeChapter, setActiveChapter] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile]           = useState(false);
+  // Trailer is opened manually via the "Watch Trailer" button
+
+  // Sync ambient music volume with modal open state
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (isModalOpen) {
+      if ((window as any).fadeAmbientOut) {
+        (window as any).fadeAmbientOut();
+      }
+    } else {
+      if ((window as any).fadeAmbientIn) {
+        (window as any).fadeAmbientIn();
+      }
+    }
+  }, [isModalOpen]);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef   = useRef<HTMLDivElement>(null);
@@ -502,15 +522,54 @@ export default function ZeroArrivalSection() {
     const range = wrapperRef.current.offsetHeight - window.innerHeight;
     if (range <= 0) return;
 
-    const p = Math.max(0, Math.min(1, -rect.top / range));
+    // Raw scroll progress 0→1 over the full wrapper height
+    const raw = Math.max(0, Math.min(1, -rect.top / range));
+
+    // Lock buffers: 200vh at entry and exit expressed as a fraction of total range
+    const lockFraction = (window.innerHeight * 2) / range;
+    // Map raw into the inner band [lockFraction, 1-lockFraction]
+    const p = Math.max(0, Math.min(1, (raw - lockFraction) / (1 - 2 * lockFraction)));
+
+    // Progress bar & chapter dots use smooth p
     setScrollProgress(p);
-    setActiveChapter(Math.round(p * (NUM - 1)));
+
+    // ── Per-chapter snap with dwell ─────────────────────────────
+    // Each of the (NUM-1) transition blocks is split:
+    //   first DWELL fraction  → hold at current chapter (dwell)
+    //   last  (1-DWELL)       → travel to next chapter (smoothstep eased)
+    const DWELL = 0.5; // 50% of each block = ~85vh of dwell at normal speed
+    const numTransitions = NUM - 1; // 7
+    const blockSize = 1 / numTransitions;
+
+    let snappedPos: number; // fractional chapter index 0..NUM-1
+
+    if (p <= 0) {
+      snappedPos = 0;
+    } else if (p >= 1) {
+      snappedPos = NUM - 1;
+    } else {
+      const blockIdx = Math.min(Math.floor(p / blockSize), numTransitions - 1);
+      const blockP   = (p - blockIdx * blockSize) / blockSize; // 0..1 within block
+
+      if (blockP < DWELL) {
+        // Dwell — stay locked at this chapter
+        snappedPos = blockIdx;
+      } else {
+        // Travel — smoothstep ease toward next chapter
+        const t = (blockP - DWELL) / (1 - DWELL);
+        const eased = t * t * (3 - 2 * t); // smoothstep
+        snappedPos = blockIdx + eased;
+      }
+    }
+
+    setActiveChapter(Math.round(snappedPos));
 
     if (trackRef.current) {
       trackRef.current.style.transform =
-        `translateX(${-p * (NUM - 1) * window.innerWidth}px)`;
+        `translateX(${-snappedPos * window.innerWidth}px)`;
     }
   }, [isMobile]);
+
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -555,12 +614,20 @@ export default function ZeroArrivalSection() {
           <div className={styles.chapterCounter} aria-live="polite">
             <span className={styles.cntCur}>{String(activeChapter + 1).padStart(2, '0')}</span>
             <span className={styles.cntSlash}>/</span>
-            <span className={styles.cntTotal}>07</span>
+            <span className={styles.cntTotal}>{String(NUM).padStart(2, '0')}</span>
           </div>
 
-          {/* Section label — top right */}
-          <div className={styles.sectionLabel} aria-hidden="true">
-            <span className={styles.sectionLabelTxt}>ARRIVAL OF ZERO</span>
+          {/* Section label — top right — fades away as we scroll right */}
+          <div 
+            className={styles.sectionLabel} 
+            aria-hidden="true"
+            style={{
+              opacity: Math.max(0, 1 - scrollProgress * 10),
+              transition: 'opacity 0.2s ease-out, visibility 0.2s',
+              visibility: scrollProgress > 0.1 ? 'hidden' : 'visible'
+            }}
+          >
+            <span className={styles.sectionLabelTxt}>Hippie Aliens Episode 1 : The arrival of Zero</span>
             <span className={styles.sectionBeacon} />
           </div>
 
@@ -584,11 +651,11 @@ export default function ZeroArrivalSection() {
                 <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.9" />
               </linearGradient>
             </defs>
-            {/* Dim dashed background line */}
+            {/* Dashed background line */}
             <line
               x1="0" y1="30" x2="1400" y2="30"
-              stroke="rgba(45,212,191,0.1)"
-              strokeWidth="1"
+              stroke="rgba(45,212,191,0.35)"
+              strokeWidth="1.5"
               strokeDasharray="6 6"
             />
             {/* Reveal line — driven by scrollProgress */}
@@ -654,7 +721,7 @@ export default function ZeroArrivalSection() {
                   style={{
                     position: 'relative',
                     zIndex: ch.id === '01' ? 100 : 1,
-                    gridTemplateColumns: ch.id === '08' ? '100% 0%' : undefined,
+                    gridTemplateColumns: ch.isFinal ? '100% 0%' : undefined,
                   }}
                 >
                   {/* Visual left half */}
@@ -665,11 +732,11 @@ export default function ZeroArrivalSection() {
                       zIndex: ch.id === '01' ? 10 : 1
                     }}
                   >
-                    <ChapterVisual visual={ch.visual} active={isActive} scrollProgress={scrollProgress} />
+                    <ChapterVisual visual={ch.visual} active={isActive} scrollProgress={scrollProgress} onWatch={() => setIsModalOpen(true)} />
                   </div>
 
                   {/* Text right half */}
-                  {ch.id !== '08' && (
+                  {!ch.isFinal && (
                     <div className={`${styles.panelTxt} ${isActive ? styles.panelTxtActive : ''}`}>
                       <div className={styles.textMeta}>
                         <span className={styles.chapterId}>CHAPTER {ch.id}</span>
