@@ -1,0 +1,786 @@
+/* ────────────────────────────────────────────────────────────
+   EnterZuraverseSection — House Selection & Initiation CSS
+   ──────────────────────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  background-color: #04030a;
+  color: var(--color-text);
+  padding: 7rem 2rem 6rem 2rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Retro Sci-fi Grid */
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: 
+    linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* Ambient glow nodes */
+.ambientBlobLeft {
+  position: absolute;
+  top: 5%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ambientBlobRight {
+  position: absolute;
+  bottom: 0%;
+  right: -10%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HUD Corners */
+.corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(56, 189, 248, 0.25);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.topLeft {
+  top: 2rem;
+  left: 2rem;
+  border-right: none;
+  border-bottom: none;
+}
+
+.topRight {
+  top: 2rem;
+  right: 2rem;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bottomLeft {
+  bottom: 2rem;
+  left: 2rem;
+  border-right: none;
+  border-top: none;
+}
+
+.bottomRight {
+  bottom: 2rem;
+  right: 2rem;
+  border-left: none;
+  border-top: none;
+}
+
+.container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ─── Header ──────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.eyebrowLine {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6));
+}
+
+.eyebrowLine:last-child {
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.6), transparent);
+}
+
+.eyebrowBadge {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  color: #38bdf8;
+  text-transform: uppercase;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(56, 189, 248, 0.25);
+}
+
+.titleGradient {
+  background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 50%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 760px;
+}
+
+.calloutPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.07);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  animation: subtlePulse 3s infinite ease-in-out;
+}
+
+.calloutDot {
+  font-size: 0.55rem;
+  color: #fbbf24;
+  text-shadow: 0 0 8px #fbbf24;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(251, 191, 36, 0);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+  }
+}
+
+/* ─── Five Houses Grid ────────────────────────────────────── */
+.housesGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .housesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .housesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .housesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── House Card ─────────────────────────────────────────── */
+.houseCard {
+  --px: 0px;
+  --py: 0px;
+  position: relative;
+  background: rgba(12, 10, 22, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease,
+              background 0.35s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.houseCard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(var(--house-rgb), 0.6);
+  box-shadow: 0 16px 40px rgba(var(--house-rgb), 0.18),
+              0 0 20px rgba(var(--house-rgb), 0.1);
+  background: rgba(15, 12, 28, 0.85);
+}
+
+.houseCardSelected {
+  border-color: var(--house-color) !important;
+  box-shadow: 0 0 35px rgba(var(--house-rgb), 0.35),
+              inset 0 0 25px rgba(var(--house-rgb), 0.12) !important;
+  background: rgba(18, 14, 34, 0.95) !important;
+  transform: translateY(-6px);
+}
+
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(var(--house-rgb), 0.18), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.houseCard:hover .cardGlow,
+.houseCardSelected .cardGlow {
+  opacity: 1;
+}
+
+.cardScanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.015) 3px,
+    rgba(255, 255, 255, 0.015) 6px
+  );
+  pointer-events: none;
+}
+
+/* Selected Ribbon */
+.selectedRibbon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: var(--house-color);
+  color: #04030a;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 0 12px rgba(var(--house-rgb), 0.8);
+}
+
+.ribbonDot {
+  font-size: 0.45rem;
+  animation: blinkDot 1.4s infinite;
+}
+
+@keyframes blinkDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* ─── House Image Wrap ───────────────────────────────────── */
+.houseImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.8;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #020205;
+}
+
+.houseImageClip {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.houseImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04) translate(var(--px), var(--py));
+  transition: transform 0.15s ease-out, filter 0.35s ease;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.houseCard:hover .houseImage {
+  transform: scale(1.08) translate(var(--px), var(--py));
+  filter: saturate(1.25) contrast(1.1);
+}
+
+.houseImageGlow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(12, 10, 22, 1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.houseSymbolBadge {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(8, 6, 16, 0.85);
+  border: 1px solid var(--house-color);
+  color: var(--house-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 0 10px rgba(var(--house-rgb), 0.5);
+  backdrop-filter: blur(6px);
+}
+
+/* ─── House Body ─────────────────────────────────────────── */
+.houseCardBody {
+  padding: 1.25rem 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+  z-index: 2;
+  gap: 0.6rem;
+}
+
+.housePeace {
+  font-size: 1.1rem;
+  color: var(--house-color);
+  opacity: 0.8;
+  line-height: 1;
+}
+
+.houseName {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.houseTitle {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--house-color);
+  font-weight: 600;
+}
+
+.houseDesc {
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #94a3b8;
+  margin-top: 0.2rem;
+  flex-grow: 1;
+}
+
+/* Traits */
+.traitsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.traitPill {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Karma Perk */
+.perkContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(var(--house-rgb), 0.08);
+  border: 1px solid rgba(var(--house-rgb), 0.25);
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+  margin-top: 0.3rem;
+}
+
+.perkIcon {
+  font-size: 0.8rem;
+  color: var(--house-color);
+}
+
+.perkText {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+/* Select Button */
+.selectBtn {
+  margin-top: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--house-rgb), 0.35);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.houseCard:hover .selectBtn {
+  background: rgba(var(--house-rgb), 0.2);
+  border-color: var(--house-color);
+  box-shadow: 0 0 15px rgba(var(--house-rgb), 0.25);
+}
+
+.selectBtnActive {
+  background: var(--house-color) !important;
+  color: #04030a !important;
+  border-color: var(--house-color) !important;
+  box-shadow: 0 0 20px rgba(var(--house-rgb), 0.6) !important;
+}
+
+.btnCheck {
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+/* ─── Dynamic Initiation Terminal HUD ────────────────────── */
+.initiationTerminal {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 12, 28, 0.95) 0%,
+    rgba(8, 6, 16, 0.95) 100%
+  );
+  border: 1px solid var(--active-color);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(var(--active-rgb), 0.22),
+              inset 0 0 30px rgba(var(--active-rgb), 0.08);
+  backdrop-filter: blur(16px);
+  animation: fadeInTerminal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInTerminal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminalTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: rgba(var(--active-rgb), 0.1);
+  border-bottom: 1px solid rgba(var(--active-rgb), 0.25);
+}
+
+.terminalStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--active-color);
+}
+
+.statusPulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--active-color);
+  box-shadow: 0 0 8px var(--active-color);
+  animation: blinkDot 1s infinite;
+}
+
+.terminalId {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+}
+
+.terminalContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  .terminalContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.terminalLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+@media (max-width: 640px) {
+  .terminalLeft {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.avatarCrest {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--active-color);
+  box-shadow: 0 0 25px rgba(var(--active-rgb), 0.4);
+  flex-shrink: 0;
+}
+
+.crestImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.crestSymbol {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  background: rgba(4, 3, 10, 0.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--active-color);
+  font-size: 0.75rem;
+}
+
+.affiliationInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.swornEyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--active-color);
+  text-transform: uppercase;
+}
+
+.swornHouseTitle {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.swornSubtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.swornPhilosophy {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+  font-style: italic;
+  max-width: 580px;
+  margin-top: 0.2rem;
+}
+
+.terminalRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .terminalRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 540px) {
+  .terminalRight {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.rewardCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(var(--active-rgb), 0.3);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rewardBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--active-color);
+}
+
+.rewardIcon {
+  font-size: 0.8rem;
+}
+
+.rewardLabel {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.rewardValue {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+}
+
+.rewardDesc {
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.proceedBtn {
+  background: linear-gradient(135deg, var(--active-color) 0%, rgba(var(--active-rgb), 0.8) 100%);
+  color: #04030a;
+  border: none;
+  border-radius: 12px;
+  padding: 1.1rem 1.75rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 0 25px rgba(var(--active-rgb), 0.5);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.proceedBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(var(--active-rgb), 0.8);
+  filter: brightness(1.1);
+}
+
+.arrowIcon {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.proceedBtn:hover .arrowIcon {
+  transform: translateX(4px);
+}
+
+/* Prompt Banner when no house chosen */
+.promptBanner {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(56, 189, 248, 0.3);
+  border-radius: 14px;
+  padding: 1.25rem 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #94a3b8;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+.promptIcon {
+  color: #38bdf8;
+  font-size: 1.1rem;
+  animation: rotateIcon 6s linear infinite;
+}
+
+@keyframes rotateIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

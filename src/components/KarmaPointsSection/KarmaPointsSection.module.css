@@ -1,0 +1,735 @@
+/* ────────────────────────────────────────────────────────────
+   KarmaPointsSection — Consciousness Economy CSS
+   ──────────────────────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  background-color: #030208;
+  color: var(--color-text);
+  padding: 7rem 2rem 6rem 2rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Retro Sci-fi Grid Overlay */
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: 
+    linear-gradient(rgba(167, 139, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
+  pointer-events: none;
+}
+
+.ambientGlow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(109, 40, 217, 0.12) 0%, rgba(56, 189, 248, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HUD Corners */
+.corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(167, 139, 250, 0.3);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.topLeft {
+  top: 2rem;
+  left: 2rem;
+  border-right: none;
+  border-bottom: none;
+}
+
+.topRight {
+  top: 2rem;
+  right: 2rem;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bottomLeft {
+  bottom: 2rem;
+  left: 2rem;
+  border-right: none;
+  border-top: none;
+}
+
+.bottomRight {
+  bottom: 2rem;
+  right: 2rem;
+  border-left: none;
+  border-top: none;
+}
+
+.container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ─── Floating Toast Notification ────────────────────────── */
+.toastNotification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  background: rgba(12, 10, 24, 0.95);
+  border: 1px solid #38bdf8;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  backdrop-filter: blur(12px);
+  animation: slideUpToast 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpToast {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.toastIcon {
+  font-size: 1.5rem;
+  color: #fbbf24;
+  animation: spinGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes spinGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 4px #fbbf24); }
+  100% { transform: scale(1.2); filter: drop-shadow(0 0 12px #fbbf24); }
+}
+
+.toastText {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  gap: 0.15rem;
+}
+
+.toastText strong {
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+}
+
+.toastText span {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+/* ─── Header ──────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.eyebrowLine {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.6));
+}
+
+.eyebrowLine:last-child {
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.6), transparent);
+}
+
+.eyebrowBadge {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  color: #a78bfa;
+  text-transform: uppercase;
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.titleGradient {
+  background: linear-gradient(135deg, #a78bfa 0%, #38bdf8 50%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 740px;
+}
+
+/* ─── Live Citizen Karma HUD ─────────────────────────────── */
+.hudCard {
+  background: linear-gradient(135deg, rgba(18, 14, 34, 0.9) 0%, rgba(8, 6, 16, 0.95) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 20px;
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5),
+              inset 0 0 35px rgba(167, 139, 250, 0.06);
+  backdrop-filter: blur(16px);
+}
+
+.hudTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.hudUser {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hudAvatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid #a78bfa;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(167, 139, 250, 0.4);
+}
+
+.hudAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hudAvatarPlaceholder {
+  font-size: 2rem;
+  color: #a78bfa;
+}
+
+.hudUserInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hudRankTag {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: #38bdf8;
+}
+
+.hudUserName {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.hudHouseTag {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.hudStatsGroup {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hudStatItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.statLabel {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+}
+
+.statScore {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.scoreNumber {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}
+
+.scoreUnit {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.statMultiplier {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+}
+
+/* Progress bar */
+.hudProgressBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #cbd5e1;
+}
+
+.progressPercent {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.progressBarTrack {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progressBarFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+}
+
+/* ─── Deeds Section ──────────────────────────────────────── */
+.deedsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.deedsHeadingWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.deedsTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.deedsSubtitle {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+.deedsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1100px) {
+  .deedsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .deedsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.deedCard {
+  background: rgba(15, 12, 28, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.deedCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--deed-color);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4),
+              0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.deedCardDone {
+  border-color: rgba(74, 222, 128, 0.4);
+  background: rgba(18, 24, 30, 0.8);
+}
+
+.deedHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deedIcon {
+  font-size: 1.8rem;
+}
+
+.deedBadge {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--deed-color);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+}
+
+.deedTitle {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.deedDesc {
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #94a3b8;
+  flex-grow: 1;
+}
+
+.deedFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.deedReward {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.deedActionBtn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--deed-color);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deedActionBtn:hover {
+  background: var(--deed-color);
+  color: #04030a;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Utility Matrix ─────────────────────────────────────── */
+.utilitySection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.utilityHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.utilityEyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.utilityTitle {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.utilityGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1000px) {
+  .utilityGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .utilityGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.utilityCard {
+  background: rgba(10, 8, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: border-color 0.25s ease;
+}
+
+.utilityCard:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.utilityIconWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.utilityIcon {
+  font-size: 1.6rem;
+}
+
+.utilityTierBadge {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.utilityCardTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.utilityCardDesc {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+/* ─── Call to Action Banner ──────────────────────────────── */
+.ctaBanner {
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 16, 40, 0.9) 0%, rgba(8, 6, 18, 0.95) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.ctaGlow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.ctaTag {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #4ade80;
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.ctaDesc {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.ctaButtons {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ctaPrimaryBtn {
+  background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 100%);
+  color: #04030a;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 0.95rem 1.85rem;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+  transition: all 0.25s ease;
+}
+
+.ctaPrimaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(56, 189, 248, 0.7);
+  filter: brightness(1.1);
+}
+
+.ctaSecondaryBtn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.95rem 1.85rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.ctaSecondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}

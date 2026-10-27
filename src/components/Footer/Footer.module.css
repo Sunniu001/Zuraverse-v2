@@ -1,0 +1,431 @@
+/* ────────────────────────────────────────────────────────────
+   Footer — Futuristic Cosmic Metaverse Footer CSS
+   ──────────────────────────────────────────────────────────── */
+
+.footer {
+  position: relative;
+  background-color: #020106;
+  color: var(--color-text);
+  padding: 5rem 2rem 3rem 2rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.topAccentLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.8) 25%,
+    rgba(167, 139, 250, 0.9) 50%,
+    rgba(74, 222, 128, 0.8) 75%,
+    transparent 100%
+  );
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ─── Newsletter Row ──────────────────────────────────────── */
+.newsletterRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+  background: linear-gradient(135deg, rgba(16, 12, 30, 0.8) 0%, rgba(6, 4, 14, 0.9) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 960px) {
+  .newsletterRow {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 2rem;
+  }
+}
+
+.newsletterLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 580px;
+}
+
+.newsletterEyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.newsletterTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.newsletterDesc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.newsletterRight {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 460px;
+}
+
+@media (max-width: 960px) {
+  .newsletterRight {
+    max-width: 100%;
+  }
+}
+
+.subscribeForm {
+  width: 100%;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(4, 3, 10, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 12px;
+  padding: 0.35rem 0.4rem 0.35rem 1rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+}
+
+.emailInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  width: 100%;
+}
+
+.emailInput::placeholder {
+  color: #64748b;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+}
+
+.subscribeBtn {
+  background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 100%);
+  color: #04030a;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.4rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.subscribeBtn:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+  transform: translateY(-1px);
+}
+
+.btnArrow {
+  font-size: 0.9rem;
+}
+
+.subscribedState {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+}
+
+.subscribedIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #4ade80;
+  color: #04030a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.subscribedState strong {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: #4ade80;
+  display: block;
+}
+
+.subscribedState p {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* ─── Divider ─────────────────────────────────────────────── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+}
+
+/* ─── Links Grid ──────────────────────────────────────────── */
+.linksGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+@media (max-width: 1100px) {
+  .linksGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .brandCol {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 680px) {
+  .linksGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .brandCol {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 460px) {
+  .linksGrid {
+    grid-template-columns: 1fr;
+  }
+  .brandCol {
+    grid-column: span 1;
+  }
+}
+
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-right: 1.5rem;
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logoPeace {
+  font-size: 1.7rem;
+  color: #38bdf8;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+}
+
+.brandDesc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.telemetryMini {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.telemetryRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.telemetryDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+.telemetryDotTeal {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.telemetryText {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+
+/* Link Columns */
+.linksCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.colTitle {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.linksList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+}
+
+.linksList li a {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.linksList li a:hover {
+  color: #38bdf8;
+  transform: translateX(3px);
+}
+
+/* ─── Bottom Bar ──────────────────────────────────────────── */
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.bottomLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.legalLinks a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.legalLinks a:hover {
+  color: #cbd5e1;
+}
+
+.legalSep {
+  color: #334155;
+  font-size: 0.7rem;
+}
+
+.scrollTopBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.65rem 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scrollTopBtn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
